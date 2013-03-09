@@ -10,29 +10,31 @@ class TitleBar(QtGui.QFrame):
         self.ui = ui.Ui_TitleBar()
         self.handle = self.ui.setupUi(self)
 
+        self.toolbarClicked = False
+
         # Set drop shadow on title text
         dropShadowEffect = QtGui.QGraphicsDropShadowEffect(self)
         dropShadowEffect.setBlurRadius(0)
         dropShadowEffect.setColor(QtGui.QColor("#343434"))
         dropShadowEffect.setOffset(0,1)
-        self.ui.TitleLabel.setGraphicsEffect(dropShadowEffect)
+        self.ui.titleLabel.setGraphicsEffect(dropShadowEffect)
         
-
-        self.toolbarClicked = False
         log.info("TitleBar setup!")
 
-    def on_CloseButton_clicked(self, *args):
+    def on_closeButton_clicked(self, *args):
         if not args:
             self.window().close()
 
-    def on_MinimizeButton_clicked(self, *args):
+    def on_minimizeButton_clicked(self, *args):
         if not args:
             self.window().setWindowState(QtCore.Qt.WindowMinimized)
 
     def mousePressEvent(self, e):
         self.toolbarClicked = (e.button() == QtCore.Qt.LeftButton)
         if self.toolbarClicked:
-            self.tbMouseStart = (e.x(), e.y())
+            window = self.window()
+            posInWindow = self.mapTo(window, self.pos())
+            self.tbMouseStart = (e.x() + posInWindow.x(), e.y() + posInWindow.x())
 
     def mouseReleaseEvent(self, e):
         if self.toolbarClicked and e.button() == QtCore.Qt.LeftButton:

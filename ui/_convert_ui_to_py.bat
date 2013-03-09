@@ -1,0 +1,1 @@
+call C:\Python33\python.exe _convert_ui_to_py.py

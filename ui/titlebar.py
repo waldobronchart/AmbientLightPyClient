@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'titlebar.ui'
 #
-# Created: Sun Mar 10 10:26:24 2013
+# Created: Sun Mar 10 21:53:50 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!

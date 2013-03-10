@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="ui">
+    <file>resources/statusbar_bg.png</file>
     <file>resources/icon_warning.png</file>
   </qresource>
 </RCC>

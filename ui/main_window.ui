@@ -37,6 +37,48 @@
 	stop:0.96 rgba(53, 58, 62, 255), 
 	stop:0.961 rgba(53, 58, 62, 0), 
 	stop:1 rgba(53, 58, 62, 0));
+}
+
+
+
+QSlider::groove:horizontal {
+	border-image: url(:ui/resources/slider_bg.png) 0 8 0 8;
+	border-left: 8px;
+	border-right: 8px;
+	margin: 0 3px 0 3px;
+	height: 14px;
+}
+
+QSlider::sub-page:horizontal {
+	border-image: url(:ui/resources/slider_bg_fill.png) 0 8 0 8;
+	border-left: 8px;
+	border-right: 8px;
+	margin: 1px 0 2px 4px;
+}
+
+QSlider::handle:horizontal {
+	background-image: url(:ui/resources/slider_handle.png);
+	width: 22px;
+	height: 22px;
+	margin: -2px -14px -4px -9px;
+}
+
+QSlider::handle:horizontal:hover {
+	background-image: url(:ui/resources/slider_handle_hover.png);
+}
+
+QSlider::handle:horizontal:pressed {
+	background-image: url(:ui/resources/slider_handle_pressed.png);
+}
+
+
+
+#hueSlider::groove:horizontal {
+	border-image: url(:ui/resources/slider_bg_hue.png) 0 8 0 8;
+}
+
+#hueSlider::sub-page:horizontal {
+	border-image: none;
 }</string>
   </property>
   <property name="animated">
@@ -85,11 +127,312 @@
       <property name="lineWidth">
        <number>0</number>
       </property>
+      <widget class="QFrame" name="titleBar">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>640</width>
+         <height>40</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#titleBar {
+	border-image: url(:ui/resources/titlebar_bg.png) 0 8 0 8;
+	border-left: 8px;
+	border-right: 8px;
+}
+
+#titleLabel {
+	font-family: Arial, sans-serif;
+	color: #e4e4e4;
+	font-size: 9pt;
+}
+
+#closeButton {
+	border-image: url(:ui/resources/titlebar_closebutton_bg.png) 0 6 0 6;
+	border-left: 6px;
+	border-right: 6px;
+	padding-bottom: 1px;
+}
+
+#closeButton:hover {
+	border-image: url(:ui/resources/titlebar_closebutton_bg_hover.png) 0 6 0 6;
+}
+
+#closeButton:pressed {
+	border-image: url(:ui/resources/titlebar_closebutton_bg_pressed.png) 0 6 0 6;
+}</string>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <widget class="QLabel" name="titleLabel">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>13</y>
+          <width>131</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Ambient Light Settings</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="closeButton">
+        <property name="geometry">
+         <rect>
+          <x>580</x>
+          <y>0</y>
+          <width>48</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>48</width>
+          <height>22</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>22</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="main_window.qrc">
+          <normaloff>:/ui/resources/icon_close.png</normaloff>:/ui/resources/icon_close.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>20</width>
+          <height>20</height>
+         </size>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QTabWidget" name="tabWidget">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>12</y>
+         <width>640</width>
+         <height>508</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QWidget {
+	background-color: transparent;
+}
+
+QTabWidget::pane {
+	background: rgba(0, 0, 0, 0);
+	border: 0px;
+}
+ 
+QTabWidget::tab-bar  {
+	left: 212px;
+}
+ 
+QTabBar::tab  {
+	font-size: 8pt;
+	color: #ffffff;
+	border-image: url(:ui/resources/titlebar_button_bg.png) 0 8 0 8;
+	border-left: 8px;
+	border-right: 8px;
+	margin-right: 10px;
+	padding: 1px 0 0 3px;
+	height: 27px;
+}
+ 
+QTabBar::tab:hover  {
+	border-image: url(:ui/resources/titlebar_button_bg_hover.png) 0 8 0 8;
+}
+ 
+QTabBar::tab:selected  {
+	border-image: url(:ui/resources/titlebar_button_bg_selected.png) 0 8 0 8;
+}</string>
+       </property>
+       <property name="tabShape">
+        <enum>QTabWidget::Rounded</enum>
+       </property>
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>16</width>
+         <height>18</height>
+        </size>
+       </property>
+       <property name="tabsClosable">
+        <bool>false</bool>
+       </property>
+       <widget class="QWidget" name="samplerTab">
+        <attribute name="icon">
+         <iconset>
+          <normalon>:/ui/resources/icon_sampler.png</normalon>
+         </iconset>
+        </attribute>
+        <attribute name="title">
+         <string>SAMPLER</string>
+        </attribute>
+       </widget>
+       <widget class="QWidget" name="colorsTab">
+        <attribute name="icon">
+         <iconset>
+          <normalon>:/ui/resources/icon_colors.png</normalon>
+         </iconset>
+        </attribute>
+        <attribute name="title">
+         <string>COLORS</string>
+        </attribute>
+        <widget class="QSlider" name="horizontalSlider">
+         <property name="geometry">
+          <rect>
+           <x>243</x>
+           <y>113</y>
+           <width>171</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="maximum">
+          <number>100</number>
+         </property>
+         <property name="pageStep">
+          <number>10</number>
+         </property>
+         <property name="value">
+          <number>100</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+        <widget class="QSlider" name="hueSlider">
+         <property name="geometry">
+          <rect>
+           <x>243</x>
+           <y>146</y>
+           <width>171</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <property name="maximum">
+          <number>100</number>
+         </property>
+         <property name="value">
+          <number>50</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="serverTab">
+        <attribute name="icon">
+         <iconset>
+          <normalon>:/ui/resources/icon_server.png</normalon>
+         </iconset>
+        </attribute>
+        <attribute name="title">
+         <string>SERVER</string>
+        </attribute>
+       </widget>
+      </widget>
+      <widget class="QFrame" name="titleBarShadow">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>39</y>
+         <width>640</width>
+         <height>8</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#titleBarShadow {
+	background: url(:ui/resources/titlebar_shadow.png);
+	background-position: top;
+	padding: 0;
+	margin: 0;
+}</string>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <property name="lineWidth">
+        <number>0</number>
+       </property>
+      </widget>
+      <widget class="QFrame" name="tabSelectionArrow">
+       <property name="geometry">
+        <rect>
+         <x>352</x>
+         <y>35</y>
+         <width>20</width>
+         <height>10</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#tabSelectionArrow {
+	width: 20px;
+	height: 10px;
+	background: url(:ui/resources/titlebar_button_arrow.png);
+	background-position: top left;
+}</string>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+      </widget>
      </widget>
     </item>
    </layout>
   </widget>
  </widget>
- <resources/>
- <connections/>
+ <resources>
+  <include location="main_window.qrc"/>
+  <include location="titlebar.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>closeButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>623</x>
+     <y>30</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>339</x>
+     <y>292</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'statusbar.ui'
 #
-# Created: Sun Mar 10 10:26:24 2013
+# Created: Sun Mar 10 21:53:50 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -56,14 +56,8 @@ class Ui_StatusBar(object):
         StatusBar.setFrameShape(QtGui.QFrame.StyledPanel)
         StatusBar.setFrameShadow(QtGui.QFrame.Raised)
         self.horizontalLayout = QtGui.QHBoxLayout(StatusBar)
-        self.horizontalLayout.setSpacing(0)
-        self.horizontalLayout.setMargin(0)
+        self.horizontalLayout.setContentsMargins(0, 6, 0, 0)
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
-        self.contentContainer = QtGui.QVBoxLayout()
-        self.contentContainer.setSpacing(0)
-        self.contentContainer.setObjectName(_fromUtf8("contentContainer"))
-        spacerItem = QtGui.QSpacerItem(20, 6, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Fixed)
-        self.contentContainer.addItem(spacerItem)
         self.contentHorizontalLayout = QtGui.QHBoxLayout()
         self.contentHorizontalLayout.setSpacing(12)
         self.contentHorizontalLayout.setObjectName(_fromUtf8("contentHorizontalLayout"))
@@ -84,8 +78,8 @@ class Ui_StatusBar(object):
         self.warningsLabel = QtGui.QLabel(StatusBar)
         self.warningsLabel.setObjectName(_fromUtf8("warningsLabel"))
         self.warningsContainer.addWidget(self.warningsLabel)
-        spacerItem1 = QtGui.QSpacerItem(9, 20, QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Minimum)
-        self.warningsContainer.addItem(spacerItem1)
+        spacerItem = QtGui.QSpacerItem(9, 20, QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Minimum)
+        self.warningsContainer.addItem(spacerItem)
         self.divider = QtGui.QFrame(StatusBar)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Maximum, QtGui.QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
@@ -104,10 +98,9 @@ class Ui_StatusBar(object):
         self.statusLabel = QtGui.QLabel(StatusBar)
         self.statusLabel.setObjectName(_fromUtf8("statusLabel"))
         self.contentHorizontalLayout.addWidget(self.statusLabel)
-        self.contentContainer.addLayout(self.contentHorizontalLayout)
-        self.horizontalLayout.addLayout(self.contentContainer)
-        spacerItem2 = QtGui.QSpacerItem(177, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.horizontalLayout.addItem(spacerItem2)
+        self.horizontalLayout.addLayout(self.contentHorizontalLayout)
+        spacerItem1 = QtGui.QSpacerItem(173, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.horizontalLayout.addItem(spacerItem1)
 
         self.retranslateUi(StatusBar)
         QtCore.QMetaObject.connectSlotsByName(StatusBar)

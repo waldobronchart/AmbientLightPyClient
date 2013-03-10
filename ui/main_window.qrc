@@ -1,0 +1,26 @@
+<RCC>
+  <qresource prefix="ui">
+    <file>resources/statusbar_shadow.png</file>
+    <file>resources/titlebar_shadow.png</file>
+    <file>resources/icon_close.png</file>
+    <file>resources/icon_colors.png</file>
+    <file>resources/icon_sampler.png</file>
+    <file>resources/icon_server.png</file>
+    <file>resources/icon_warning.png</file>
+    <file>resources/statusbar_bg.png</file>
+    <file>resources/titlebar_bg.png</file>
+    <file>resources/titlebar_button_arrow.png</file>
+    <file>resources/titlebar_button_bg.png</file>
+    <file>resources/titlebar_button_bg_hover.png</file>
+    <file>resources/titlebar_button_bg_selected.png</file>
+    <file>resources/titlebar_closebutton_bg.png</file>
+    <file>resources/titlebar_closebutton_bg_hover.png</file>
+    <file>resources/titlebar_closebutton_bg_pressed.png</file>
+    <file>resources/slider_bg_fill.png</file>
+    <file>resources/slider_bg_hue.png</file>
+    <file>resources/slider_handle.png</file>
+    <file>resources/slider_bg.png</file>
+    <file>resources/slider_handle_hover.png</file>
+    <file>resources/slider_handle_pressed.png</file>
+  </qresource>
+</RCC>

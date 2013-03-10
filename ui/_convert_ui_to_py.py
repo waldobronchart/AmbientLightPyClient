@@ -14,6 +14,7 @@ def replace_in_file(path, source, replacement):
     file.close()
 
 # Resources
+subprocess.call("C:\Python33\Lib\site-packages\PyQt4\pyrcc4.exe -py3 main_window.qrc > main_window_rc.py", shell=True)
 subprocess.call("C:\Python33\Lib\site-packages\PyQt4\pyrcc4.exe -py3 titlebar.qrc > titlebar_rc.py", shell=True)
 subprocess.call("C:\Python33\Lib\site-packages\PyQt4\pyrcc4.exe -py3 statusbar.qrc > statusbar_rc.py", shell=True)
 subprocess.call("C:\Python33\Lib\site-packages\PyQt4\pyrcc4.exe -py3 titlebarbutton.qrc > titlebarbutton_rc.py", shell=True)

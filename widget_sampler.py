@@ -4,17 +4,18 @@ from logger import log
 Preferences = preferences.Preferences.Instance
 
 ## A node used to indicate the edges of the TV
+#
+# TODO: Clamp position inside parent
 class SamplerBoundsNode(QtGui.QGraphicsItem):
     Type = QtGui.QGraphicsItem.UserType + 1
 
-    def __init__(self, pos=(0, 0)):
+    def __init__(self, parent, pos=(0, 0)):
         super(SamplerBoundsNode, self).__init__()
         self.size = 12
         self.borderSize = 2
+        self.container = parent
 
         # Clamp pos and set
-        pos[0] = max(0, min(1, pos[0]))
-        pos[1] = max(0, min(1, pos[1]))
         log.debug("...adding bounds node with position " + str(pos))
         self.setPos(pos[0], pos[1])
 
@@ -47,15 +48,18 @@ class SamplerBoundsNode(QtGui.QGraphicsItem):
                              self.size + self.borderSize)
 
     def mousePressEvent(self, event):
-        self.emit(QtCore.SIGNAL("moved(bool)"), False)
+        self.container.nodeMovedCallback(self, False)
+        self.update()
         super(SamplerBoundsNode, self).mousePressEvent(event)
 
     def mouseMoveEvent(self, event):
-        self.emit(QtCore.SIGNAL("moved(bool)"), False)
+        self.container.nodeMovedCallback(self, False)
+        self.update()
         super(SamplerBoundsNode, self).mouseMoveEvent(event)
 
     def mouseReleaseEvent(self, event):
-        self.emit(QtCore.SIGNAL("moved(bool)"), True)
+        self.container.nodeMovedCallback(self, True)
+        self.update()
         super(SamplerBoundsNode, self).mouseReleaseEvent(event)
 
 
@@ -95,6 +99,8 @@ class SamplerBoundsNodeConnection(QtGui.QGraphicsItem):
 
 ## Contains the nodes and lines
 class SamplerNodesContainer(QtGui.QGraphicsView):
+    nodesMoved = QtCore.pyqtSignal(bool)
+
     def __init__(self, parent):
         super(SamplerNodesContainer, self).__init__(parent)
         self.setStyleSheet("SamplerNodesContainer { background: transparent; border: 0; }")
@@ -111,33 +117,40 @@ class SamplerNodesContainer(QtGui.QGraphicsView):
 
         # 4 Nodes
         self.nodes = []
-        self.topLeft = self.addNode(Preferences.boundsTopLeft)
-        self.topRight = self.addNode(Preferences.boundsTopRight)
-        self.bottomRight = self.addNode(Preferences.boundsBottomRight)
-        self.bottomLeft = self.addNode(Preferences.boundsBottomLeft)
+        self.topLeft = self._addNode(Preferences.boundsTopLeft)
+        self.topRight = self._addNode(Preferences.boundsTopRight)
+        self.bottomRight = self._addNode(Preferences.boundsBottomRight)
+        self.bottomLeft = self._addNode(Preferences.boundsBottomLeft)
 
         # Lines
         self.lines = []
-        self.addConnectionLine(self.topLeft, self.topRight)
-        self.addConnectionLine(self.topRight, self.bottomRight)
-        self.addConnectionLine(self.bottomRight, self.bottomLeft)
-        self.addConnectionLine(self.bottomLeft, self.topLeft)
+        self._addConnectionLine(self.topLeft, self.topRight)
+        self._addConnectionLine(self.topRight, self.bottomRight)
+        self._addConnectionLine(self.bottomRight, self.bottomLeft)
+        self._addConnectionLine(self.bottomLeft, self.topLeft)
 
-    def addNode(self, position):
-        node = SamplerBoundsNode(position)
+    def nodeMovedCallback(self, node, finishedMoving):
+        for line in self.lines:
+            line.update()
+        self.nodesMoved.emit(finishedMoving)
+        
+    def normalizedPosToPixel(self, pos):
+        # Clamp between [0, 1]
+        pos[0] = max(0, min(1, pos[0]))
+        pos[1] = max(0, min(1, pos[1]))
+        return [pos[0] * self.scene.width(), pos[1] * self.scene.height()]
+
+    def _addNode(self, normalizedPos):
+        node = SamplerBoundsNode(self, self.normalizedPosToPixel(normalizedPos))
         self.nodes.append(node)
         self.scene.addItem(node)
-        #QtCore.QObject.connect(node, QtCore.SIGNAL('moved(bool)'), self.on_nodeMoved)
         return node
 
-    def addConnectionLine(self, startNode, endNode):
+    def _addConnectionLine(self, startNode, endNode):
         line = SamplerBoundsNodeConnection(startNode, endNode)
         self.lines.append(line)
         self.scene.addItem(line)
         return line
-
-    def on_nodeMoved(self, finishedMoving):
-        print("node moved!")
 
     def setBounds(self, topLeft, topRight, bottomRight, bottomLeft):
         self.topLeft.setPos(topLeft[0], topLeft[1])
@@ -148,8 +161,8 @@ class SamplerNodesContainer(QtGui.QGraphicsView):
 
 
 class Sampler(QtGui.QLabel):
-    def __init__(self):
-        super(Sampler, self).__init__()
+    def __init__(self, parent):
+        super(Sampler, self).__init__(parent)
         log.info("Initializing Sampler")
 
         self.setMinimumSize(640, 480)
@@ -157,7 +170,9 @@ class Sampler(QtGui.QLabel):
         self.bgPixmap = QtGui.QPixmap(640, 480)
         self.bgPixmap.fill(QtCore.Qt.black)
         self.setScaledContents(True)
+
         self.nodesContainer = SamplerNodesContainer(self)
+        self.nodesContainer.nodesMoved.connect(self.on_nodesContainer_nodesMoved)
         self.setFrame(None, 0, 0)
 
     def setFrame(self, buffer, bufferWidth, bufferHeight):
@@ -168,3 +183,9 @@ class Sampler(QtGui.QLabel):
         image = QtGui.QImage(buffer, bufferWidth, bufferHeight, 0, QtGui.QImage.Format_RGB888)
         pixmap = QtGui.QPixmap.fromImage(image)
         self.setPixmap(pixmap)
+
+    def on_nodesContainer_nodesMoved(self, finishedMoving):
+        self.update()
+        if finishedMoving:
+            # todo: save bounds after move
+            log.warning("TODO: save bounds")

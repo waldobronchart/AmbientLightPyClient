@@ -22,18 +22,17 @@ class TitleBar(QtGui.QFrame):
 
         # Add buttons to titlebar
         self.ui.buttonGroup = QtGui.QButtonGroup(self)
-        self.ui.samplerButton = self.addButton("SAMPLER", "icon_sampler.png", self.on_samplerButton_toggled)
-        self.ui.colorsButton = self.addButton("COLORS", "icon_colors.png", self.on_colorsButton_toggled)
-        self.ui.serverButton = self.addButton("SERVER", "icon_server.png", self.on_serverButton_toggled)
+        self.samplerButton = self.addButton("SAMPLER", "icon_sampler.png").ui.button
+        self.colorsButton = self.addButton("COLORS", "icon_colors.png").ui.button
+        self.serverButton = self.addButton("SERVER", "icon_server.png").ui.button
 
         # Select sampler button by default
-        self.ui.samplerButton.ui.button.setChecked(True)
+        self.samplerButton.setChecked(True)
 
-    def addButton(self, text, icon, callback):
+    def addButton(self, text, icon):
         button = TitleBarButton(text, icon)
         self.ui.buttonsContainer.addWidget(button)
         self.ui.buttonGroup.addButton(button.ui.button)
-        QtCore.QObject.connect(button.ui.button, QtCore.SIGNAL('toggled(bool)'), callback)
         return button
 
     def on_closeButton_clicked(self, *args):
@@ -43,18 +42,6 @@ class TitleBar(QtGui.QFrame):
     def on_minimizeButton_clicked(self, *args):
         if not args:
             self.window().setWindowState(QtCore.Qt.WindowMinimized)
-
-    def on_samplerButton_toggled(self, checked):
-        if checked:
-            log.debug("Sampler button selected")
-
-    def on_colorsButton_toggled(self, checked):
-        if checked:
-            log.debug("Colors button selected")
-
-    def on_serverButton_toggled(self, checked):
-        if checked:
-            log.debug("Server button selected")
 
     def mousePressEvent(self, e):
         self.toolbarClicked = (e.button() == QtCore.Qt.LeftButton)

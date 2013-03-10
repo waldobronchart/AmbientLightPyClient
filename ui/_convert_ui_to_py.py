@@ -16,15 +16,18 @@ def replace_in_file(path, source, replacement):
 # Resources
 subprocess.call("C:\Python33\Lib\site-packages\PyQt4\pyrcc4.exe -py3 titlebar.qrc > titlebar_rc.py", shell=True)
 subprocess.call("C:\Python33\Lib\site-packages\PyQt4\pyrcc4.exe -py3 statusbar.qrc > statusbar_rc.py", shell=True)
+subprocess.call("C:\Python33\Lib\site-packages\PyQt4\pyrcc4.exe -py3 titlebarbutton.qrc > titlebarbutton_rc.py", shell=True)
 
 # UI's
 subprocess.call("C:\Python33\Lib\site-packages\PyQt4\pyuic4.bat main_window.ui > main_window.py")
 subprocess.call("C:\Python33\Lib\site-packages\PyQt4\pyuic4.bat titlebar.ui > titlebar.py")
 subprocess.call("C:\Python33\Lib\site-packages\PyQt4\pyuic4.bat statusbar.ui > statusbar.py")
+subprocess.call("C:\Python33\Lib\site-packages\PyQt4\pyuic4.bat titlebarbutton.ui > titlebarbutton.py")
 
 # Python fixup for each UI
 replace_in_file('main_window.py', 'import main_window_rc', 'import ui.main_window_rc')
 replace_in_file('titlebar.py', 'import titlebar_rc', 'import ui.titlebar_rc')
 replace_in_file('statusbar.py', 'import statusbar_rc', 'import ui.statusbar_rc')
+replace_in_file('titlebarbutton.py', 'import titlebarbutton_rc', 'import ui.titlebarbutton_rc')
 
 print("done")

@@ -75,7 +75,7 @@
   <property name="frameShadow">
    <enum>QFrame::Raised</enum>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout">
+  <layout class="QHBoxLayout" name="horizontalLayout_2">
    <property name="spacing">
     <number>0</number>
    </property>
@@ -113,20 +113,63 @@
     </layout>
    </item>
    <item>
-    <spacer name="horizontalSpacer">
+    <spacer name="hSpacerButtonsLeft">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
-       <width>439</width>
+       <width>200</width>
        <height>13</height>
       </size>
      </property>
     </spacer>
    </item>
    <item>
-    <layout class="QVBoxLayout" name="buttonsContainer">
+    <layout class="QVBoxLayout" name="buttonsVerticalContainer" stretch="0,0">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <item>
+      <spacer name="buttonsVerticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Fixed</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>12</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="buttonsContainer">
+       <property name="spacing">
+        <number>10</number>
+       </property>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <spacer name="hSpacerButtonsRight">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>200</width>
+       <height>13</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="windowButtonsContainer">
      <property name="spacing">
       <number>0</number>
      </property>
@@ -188,7 +231,7 @@
         </property>
         <property name="icon">
          <iconset resource="titlebar.qrc">
-          <normaloff>:/icons/resources/icon_close.png</normaloff>:/icons/resources/icon_close.png</iconset>
+          <normaloff>:/ui/resources/icon_close.png</normaloff>:/ui/resources/icon_close.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -200,7 +243,7 @@
       </widget>
      </item>
      <item>
-      <spacer name="buttonsVerticalSpacer">
+      <spacer name="windowButtonsVerticalSpacer">
        <property name="orientation">
         <enum>Qt::Vertical</enum>
        </property>
@@ -215,7 +258,7 @@
     </layout>
    </item>
    <item>
-    <spacer name="buttonsSpacer">
+    <spacer name="hSpacerRight_2">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>

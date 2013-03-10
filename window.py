@@ -4,6 +4,7 @@ from PyQt4 import QtGui, QtCore
 import ui
 from widget_titlebar import TitleBar
 from widget_statusbar import StatusBar
+from widget_sampler import Sampler
 
 class MainWindow(QtGui.QMainWindow):
     Instance = None
@@ -30,16 +31,17 @@ class MainWindow(QtGui.QMainWindow):
         contentWidth = contentRect.width()
         contentHeight = contentRect.height()
 
-        # Add toolbar yo
+        # Add titlebar yo
         self.ui.titlebar = TitleBar(self.ui.contentFrame)
         self.ui.titlebar.setMinimumWidth(contentWidth)
-        #self.ui.titlebar.
-        #self.ui.InnerLayout.addWidget(self.ui.titlebar)
 
         # Add statusbar
         self.ui.statusbar = StatusBar(self.ui.contentFrame)
         self.ui.statusbar.setMinimumWidth(contentWidth)
         self.ui.statusbar.move(0, contentHeight - self.ui.statusbar.height())
+
+        # Add sampler widget
+        self.ui.sampler = Sampler()
 
 
 

@@ -1,0 +1,31 @@
+{
+    "boundsBottomLeft": [
+        0.2, 
+        0.8
+    ], 
+    "boundsBottomRight": [
+        0.8, 
+        0.8
+    ], 
+    "boundsTopLeft": [
+        0.2, 
+        0.2
+    ], 
+    "boundsTopRight": [
+        0.8, 
+        0.2
+    ], 
+    "camBrightness": 0.46, 
+    "camContrast": 0.12, 
+    "camGain": 0.83, 
+    "camSaturation": 0.29, 
+    "colorBrightness": 0.5, 
+    "colorHue": 0.5, 
+    "colorSaturation": 0.5, 
+    "fadeDelayMs": 200, 
+    "serverEndpoint": "192.168.1.200:13555", 
+    "windowPos": [
+        0, 
+        0
+    ]
+}

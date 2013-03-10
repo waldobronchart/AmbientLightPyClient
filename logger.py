@@ -2,7 +2,7 @@ import logging
 import os
 
 log = logging.getLogger('AmbientLightPyClient')
-log.setLevel(logging.INFO)
+log.setLevel(logging.DEBUG)
 
 formatter = logging.Formatter('[%(asctime)s] [%(levelname)s]\t%(message)s')
 

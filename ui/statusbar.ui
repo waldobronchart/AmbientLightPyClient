@@ -110,7 +110,7 @@
             <enum>Qt::PlainText</enum>
            </property>
            <property name="pixmap">
-            <pixmap resource="statusbar.qrc">:/icons/resources/icon_warning.png</pixmap>
+            <pixmap resource="statusbar.qrc">:/ui/resources/icon_warning.png</pixmap>
            </property>
            <property name="alignment">
             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>

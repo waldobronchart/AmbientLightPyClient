@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'statusbar.ui'
 #
-# Created: Sat Mar  9 22:08:20 2013
+# Created: Sun Mar 10 10:26:24 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -75,7 +75,7 @@ class Ui_StatusBar(object):
         self.warningsIcon.setMinimumSize(QtCore.QSize(20, 20))
         self.warningsIcon.setText(_fromUtf8(""))
         self.warningsIcon.setTextFormat(QtCore.Qt.PlainText)
-        self.warningsIcon.setPixmap(QtGui.QPixmap(_fromUtf8(":/icons/resources/icon_warning.png")))
+        self.warningsIcon.setPixmap(QtGui.QPixmap(_fromUtf8(":/ui/resources/icon_warning.png")))
         self.warningsIcon.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.warningsIcon.setMargin(-1)
         self.warningsIcon.setIndent(0)

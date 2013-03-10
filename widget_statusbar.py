@@ -5,6 +5,8 @@ from PyQt4 import QtGui, QtCore
 class StatusBar(QtGui.QFrame):
     def __init__(self, *args):
         super(StatusBar, self).__init__(*args)
+        log.info("Initializing StatusBar")
+        
         self.ui = ui.Ui_StatusBar()
         self.handle = self.ui.setupUi(self)
 
@@ -21,5 +23,3 @@ class StatusBar(QtGui.QFrame):
         dropShadowEffect.setColor(QtGui.QColor("#343434"))
         dropShadowEffect.setOffset(0,1)
         self.ui.statusLabel.setGraphicsEffect(dropShadowEffect)
-        
-        log.info("StatusBar setup!")

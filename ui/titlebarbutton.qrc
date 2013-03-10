@@ -1,0 +1,8 @@
+<RCC>
+  <qresource prefix="ui">
+    <file>resources/icon_colors.png</file>
+    <file>resources/icon_sampler.png</file>
+    <file>resources/icon_server.png</file>
+    <file>resources/button_selection_arrow.png</file>
+  </qresource>
+</RCC>

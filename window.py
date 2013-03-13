@@ -4,14 +4,15 @@ from PyQt4 import QtGui, QtCore
 import ui
 from widget_sampler import Sampler
 from logger import log
+import preferences
+Preferences = preferences.Preferences.Instance
 
 
-
-# todo: checkbox style
-# todo: button style
+# todo: window position
 # todo: server tab
 # todo: write a statusbar logger
 # todo: make window shadow transparent to events
+# todo: color tab value conversions
 class MainWindow(QtGui.QMainWindow):
     Instance = None
 
@@ -19,6 +20,7 @@ class MainWindow(QtGui.QMainWindow):
         super(MainWindow, self).__init__()
         MainWindow.Instance = self
         self.titleBarClicked = False
+        self.initialized = False
 
         # Setup
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
@@ -39,6 +41,29 @@ class MainWindow(QtGui.QMainWindow):
 
         # The Sampler widget (this allows for selection of the tv sample bounds)
         self.ui.sampler = Sampler(self.ui.samplerTab)
+
+        # The colors tab
+        self.initializeColorsTab()
+
+        # All done
+        self.initialized = True
+
+    def initializeColorsTab(self):
+        self.ui.fadeDurationSlider.setValue(Preferences.fadeDelayMs)
+
+        self.ui.colorHueCheckBox.setChecked(Preferences.fixedColorEnabled)
+        self.ui.colorHueSlider.setValue(Preferences.colorHue)
+        self.ui.colorSaturationSlider.setValue(Preferences.colorSaturation)
+        self.ui.colorBrightnessSlider.setValue(Preferences.colorBrightness)
+
+        self.ui.camSaturationSlider.setValue(Preferences.camSaturation)
+        self.ui.camBrightnessSlider.setValue(Preferences.camBrightness)
+        self.ui.camContrastSlider.setValue(Preferences.camContrast)
+        self.ui.camGainSlider.setValue(Preferences.camGain)
+
+        # Color tab check and uncheck to refresh ui
+        self.ui.colorHueCheckBox.toggle()
+        self.ui.colorHueCheckBox.toggle()
 
     def addDropShadowToText(self, label):
         dropShadowEffect = QtGui.QGraphicsDropShadowEffect(self)
@@ -69,6 +94,63 @@ class MainWindow(QtGui.QMainWindow):
             arrowOffset = QtCore.QPoint(198, 22)
             tabRect = self.ui.tabWidget.tabBar().tabRect(index)
             self.ui.tabSelectionArrow.move(tabRect.center() + arrowOffset)
+
+    def on_fadeDurationSlider_valueChanged(self, value):
+        self.ui.fadeDurationLabel.setText("FADE DURATION (%ims)" % value)
+
+    def on_fadeDurationSlider_sliderReleased(self):
+        log.debug("fadeDuration set to %ims" % self.ui.fadeDurationSlider.value())
+        self.updateAndSaveSettings()
+
+    def on_colorHueCheckBox_toggled(self, checked):
+        log.debug("fixedColorEnabled set to %s" % checked)
+        self.updateAndSaveSettings()
+
+    def on_colorHueSlider_sliderReleased(self):
+        log.debug("colorHue set to %i" % self.ui.colorHueSlider.value())
+        self.updateAndSaveSettings()
+
+    def on_colorSaturationSlider_sliderReleased(self):
+        log.debug("colorSaturation set to %i" % self.ui.colorSaturationSlider.value())
+        self.updateAndSaveSettings()
+
+    def on_colorBrightnessSlider_sliderReleased(self):
+        log.debug("colorBrightness set to %i" % self.ui.colorBrightnessSlider.value())
+        self.updateAndSaveSettings()
+
+    def on_camSaturationSlider_sliderReleased(self):
+        log.debug("camSaturation set to %i" % self.ui.camSaturationSlider.value())
+        self.updateAndSaveSettings()
+
+    def on_camBrightnessSlider_sliderReleased(self):
+        log.debug("camBrightness set to %i" % self.ui.camBrightnessSlider.value())
+        self.updateAndSaveSettings()
+
+    def on_camContrastSlider_sliderReleased(self):
+        log.debug("camContrast set to %i" % self.ui.camContrastSlider.value())
+        self.updateAndSaveSettings()
+
+    def on_camGainSlider_sliderReleased(self):
+        log.debug("camGain set to %i" % self.ui.camGainSlider.value())
+        self.updateAndSaveSettings()
+
+    def updateAndSaveSettings(self):
+        if not self.initialized:
+            return
+        
+        Preferences.fadeDelayMs = self.ui.fadeDurationSlider.value()
+
+        Preferences.fixedColorEnabled = self.ui.colorHueCheckBox.isChecked()
+        Preferences.colorHue = self.ui.colorHueSlider.value()
+        Preferences.colorSaturation = self.ui.colorSaturationSlider.value()
+        Preferences.colorBrightness = self.ui.colorBrightnessSlider.value()
+
+        Preferences.camSaturation = self.ui.camSaturationSlider.value()
+        Preferences.camBrightness = self.ui.camBrightnessSlider.value()
+        Preferences.camContrast = self.ui.camContrastSlider.value()
+        Preferences.camGain = self.ui.camGainSlider.value()
+
+        preferences.savePreferences()
 
 
 ## Show the main window

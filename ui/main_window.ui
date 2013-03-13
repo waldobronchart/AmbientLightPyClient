@@ -79,13 +79,59 @@ QSlider::handle:horizontal:pressed {
 
 
 
-#hueSlider::groove:horizontal {
-	border-image: url(:ui/resources/slider_bg_hue.png) 0 8 0 8;
-}
 
-#hueSlider::sub-page:horizontal {
-	border-image: none;
-}</string>
+
+
+
+
+
+
+
+
+
+
+
+ QCheckBox {
+	margin-top: 1px;
+     spacing: 5px;
+ }
+
+ QCheckBox::indicator {
+     width: 18px;
+     height: 18px;
+ }
+
+ QCheckBox::indicator:unchecked {
+     image: url(:ui/resources/checkbox_unchecked.png);
+ }
+
+ QCheckBox::indicator:unchecked:hover {
+     image: url(:ui/resources/checkbox_unchecked_hover.png);
+ }
+
+ QCheckBox::indicator:unchecked:pressed {
+     image: url(:ui/resources/checkbox_checked_pressed.png);
+ }
+
+ QCheckBox::indicator:checked {
+     image: url(:ui/resources/checkbox_checked.png);
+ }
+
+ QCheckBox::indicator:checked:hover {
+     image: url(:ui/resources/checkbox_checked_hover.png);
+ }
+
+ QCheckBox::indicator:checked:pressed {
+     image: url(:ui/resources/checkbox_checked_pressed.png);
+ }
+
+
+
+
+
+
+
+</string>
   </property>
   <property name="animated">
    <bool>true</bool>
@@ -237,6 +283,11 @@ QTabBar::tab:selected  {
         </attribute>
        </widget>
        <widget class="QWidget" name="colorsTab">
+        <property name="styleSheet">
+         <string notr="true">#colorsTab QLabel {
+	font-size: 8pt;
+}</string>
+        </property>
         <attribute name="icon">
          <iconset>
           <normalon>:/ui/resources/icon_colors.png</normalon>
@@ -245,49 +296,382 @@ QTabBar::tab:selected  {
         <attribute name="title">
          <string>COLORS</string>
         </attribute>
-        <widget class="QSlider" name="horizontalSlider">
+        <widget class="QWidget" name="">
          <property name="geometry">
           <rect>
-           <x>243</x>
-           <y>113</y>
-           <width>171</width>
-           <height>22</height>
+           <x>190</x>
+           <y>1</y>
+           <width>258</width>
+           <height>481</height>
           </rect>
          </property>
-         <property name="maximum">
-          <number>100</number>
-         </property>
-         <property name="pageStep">
-          <number>10</number>
-         </property>
-         <property name="value">
-          <number>100</number>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-        <widget class="QSlider" name="hueSlider">
-         <property name="geometry">
-          <rect>
-           <x>243</x>
-           <y>146</y>
-           <width>171</width>
-           <height>22</height>
-          </rect>
-         </property>
-         <property name="styleSheet">
-          <string notr="true"/>
-         </property>
-         <property name="maximum">
-          <number>100</number>
-         </property>
-         <property name="value">
-          <number>50</number>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
+         <layout class="QVBoxLayout" name="colorsTabLayout">
+          <property name="spacing">
+           <number>10</number>
+          </property>
+          <item>
+           <spacer name="verticalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>70</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="fadeDurationLayout">
+            <property name="spacing">
+             <number>2</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="fadeDurationLabel">
+              <property name="text">
+               <string>FADE DURATION (200ms)</string>
+              </property>
+              <property name="margin">
+               <number>0</number>
+              </property>
+              <property name="indent">
+               <number>8</number>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSlider" name="fadeDurationSlider">
+              <property name="maximum">
+               <number>1000</number>
+              </property>
+              <property name="singleStep">
+               <number>1</number>
+              </property>
+              <property name="pageStep">
+               <number>10</number>
+              </property>
+              <property name="value">
+               <number>200</number>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="tickInterval">
+               <number>10</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="colorHueLayout">
+            <property name="spacing">
+             <number>2</number>
+            </property>
+            <item>
+             <layout class="QHBoxLayout" name="colorHueLabelLayout">
+              <item>
+               <widget class="QLabel" name="colorHueLabel">
+                <property name="text">
+                 <string>FIXED COLOR HUE</string>
+                </property>
+                <property name="margin">
+                 <number>0</number>
+                </property>
+                <property name="indent">
+                 <number>8</number>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="colorHueLabelSpacer">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="colorHueCheckBox">
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QSlider" name="colorHueSlider">
+              <property name="styleSheet">
+               <string notr="true">#colorHueSlider::groove:horizontal {
+	border-image: url(:ui/resources/slider_bg_hue.png) 0 8 0 8;
+}
+
+#colorHueSlider::sub-page:horizontal {
+	border-image: none;
+}</string>
+              </property>
+              <property name="maximum">
+               <number>1000</number>
+              </property>
+              <property name="value">
+               <number>50</number>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="colorSaturationLayout">
+            <property name="spacing">
+             <number>2</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="colorSaturationLabel">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="text">
+               <string>SATURATION</string>
+              </property>
+              <property name="margin">
+               <number>0</number>
+              </property>
+              <property name="indent">
+               <number>8</number>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSlider" name="colorSaturationSlider">
+              <property name="maximum">
+               <number>255</number>
+              </property>
+              <property name="pageStep">
+               <number>10</number>
+              </property>
+              <property name="value">
+               <number>200</number>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="colorBrightnessLayout">
+            <property name="spacing">
+             <number>2</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="colorBrightnessLabel">
+              <property name="text">
+               <string>BRIGHTNESS</string>
+              </property>
+              <property name="margin">
+               <number>0</number>
+              </property>
+              <property name="indent">
+               <number>8</number>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSlider" name="colorBrightnessSlider">
+              <property name="minimum">
+               <number>-100</number>
+              </property>
+              <property name="maximum">
+               <number>100</number>
+              </property>
+              <property name="pageStep">
+               <number>10</number>
+              </property>
+              <property name="value">
+               <number>0</number>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="camSaturationLayout">
+            <property name="spacing">
+             <number>2</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="camSaturationLabel">
+              <property name="text">
+               <string>CAMERA SATURATION</string>
+              </property>
+              <property name="margin">
+               <number>0</number>
+              </property>
+              <property name="indent">
+               <number>8</number>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSlider" name="camSaturationSlider">
+              <property name="maximum">
+               <number>255</number>
+              </property>
+              <property name="pageStep">
+               <number>10</number>
+              </property>
+              <property name="value">
+               <number>74</number>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="camBrightnessLayout">
+            <property name="spacing">
+             <number>2</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="camBrightnessLabel">
+              <property name="text">
+               <string>CAMERA BRIGHTNESS</string>
+              </property>
+              <property name="margin">
+               <number>0</number>
+              </property>
+              <property name="indent">
+               <number>8</number>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSlider" name="camBrightnessSlider">
+              <property name="maximum">
+               <number>255</number>
+              </property>
+              <property name="pageStep">
+               <number>10</number>
+              </property>
+              <property name="value">
+               <number>90</number>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="camContrastLayout">
+            <property name="spacing">
+             <number>2</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="camContrastLabel">
+              <property name="text">
+               <string>CAMERA CONTRAST</string>
+              </property>
+              <property name="margin">
+               <number>0</number>
+              </property>
+              <property name="indent">
+               <number>8</number>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSlider" name="camContrastSlider">
+              <property name="maximum">
+               <number>255</number>
+              </property>
+              <property name="pageStep">
+               <number>10</number>
+              </property>
+              <property name="value">
+               <number>20</number>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="camGainLayout">
+            <property name="spacing">
+             <number>2</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="camGainLabel">
+              <property name="text">
+               <string>CAMERA GAIN</string>
+              </property>
+              <property name="margin">
+               <number>0</number>
+              </property>
+              <property name="indent">
+               <number>8</number>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSlider" name="camGainSlider">
+              <property name="maximum">
+               <number>255</number>
+              </property>
+              <property name="pageStep">
+               <number>10</number>
+              </property>
+              <property name="value">
+               <number>210</number>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
         </widget>
        </widget>
        <widget class="QWidget" name="serverTab">
@@ -627,6 +1011,214 @@ QTabBar::tab:selected  {
     <hint type="destinationlabel">
      <x>339</x>
      <y>292</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>colorHueCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>colorHueSlider</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>463</x>
+     <y>191</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>348</x>
+     <y>214</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>colorHueCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>colorSaturationLabel</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>453</x>
+     <y>180</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>338</x>
+     <y>231</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>colorHueCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>colorSaturationSlider</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>453</x>
+     <y>180</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>338</x>
+     <y>250</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>colorHueCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>colorBrightnessLabel</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>453</x>
+     <y>180</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>338</x>
+     <y>278</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>colorHueCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>colorBrightnessSlider</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>453</x>
+     <y>180</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>338</x>
+     <y>297</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>colorHueCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>camSaturationLabel</receiver>
+   <slot>setHidden(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>453</x>
+     <y>180</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>338</x>
+     <y>325</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>colorHueCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>camSaturationSlider</receiver>
+   <slot>setHidden(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>453</x>
+     <y>180</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>338</x>
+     <y>344</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>colorHueCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>camBrightnessLabel</receiver>
+   <slot>setHidden(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>453</x>
+     <y>180</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>338</x>
+     <y>372</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>colorHueCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>camBrightnessSlider</receiver>
+   <slot>setHidden(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>453</x>
+     <y>180</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>338</x>
+     <y>391</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>colorHueCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>camContrastLabel</receiver>
+   <slot>setHidden(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>453</x>
+     <y>180</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>338</x>
+     <y>419</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>colorHueCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>camContrastSlider</receiver>
+   <slot>setHidden(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>453</x>
+     <y>180</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>338</x>
+     <y>438</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>colorHueCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>camGainLabel</receiver>
+   <slot>setHidden(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>453</x>
+     <y>180</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>338</x>
+     <y>466</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>colorHueCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>camGainSlider</receiver>
+   <slot>setHidden(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>453</x>
+     <y>180</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>338</x>
+     <y>485</y>
     </hint>
    </hints>
   </connection>

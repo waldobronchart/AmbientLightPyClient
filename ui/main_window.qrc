@@ -1,5 +1,10 @@
 <RCC>
   <qresource prefix="ui">
+    <file>resources/checkbox_checked.png</file>
+    <file>resources/checkbox_unchecked_hover.png</file>
+    <file>resources/checkbox_checked_hover.png</file>
+    <file>resources/checkbox_checked_pressed.png</file>
+    <file>resources/checkbox_unchecked.png</file>
     <file>resources/statusbar_shadow.png</file>
     <file>resources/titlebar_shadow.png</file>
     <file>resources/icon_close.png</file>

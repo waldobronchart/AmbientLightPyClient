@@ -4,12 +4,10 @@ from logger import log
 Preferences = preferences.Preferences.Instance
 
 ## A node used to indicate the edges of the TV
-#
-# TODO: Clamp position inside parent
 class SamplerBoundsNode(QtGui.QGraphicsItem):
     Type = QtGui.QGraphicsItem.UserType + 1
 
-    def __init__(self, parent, pos=(0, 0)):
+    def __init__(self, parent, pos, limitRect):
         super(SamplerBoundsNode, self).__init__()
         self.size = 12
         self.borderSize = 2
@@ -18,6 +16,8 @@ class SamplerBoundsNode(QtGui.QGraphicsItem):
         # Clamp pos and set
         log.debug("...adding bounds node with position " + str(pos))
         self.setPos(pos[0], pos[1])
+        self.limitRect = limitRect
+        self.limitPosition()
 
         # Item is movable with mouse
         self.setFlag(QtGui.QGraphicsItem.ItemIsMovable)
@@ -58,9 +58,17 @@ class SamplerBoundsNode(QtGui.QGraphicsItem):
         super(SamplerBoundsNode, self).mouseMoveEvent(event)
 
     def mouseReleaseEvent(self, event):
+        self.limitPosition()
         self.container.nodeMovedCallback(self, True)
         self.update()
         super(SamplerBoundsNode, self).mouseReleaseEvent(event)
+
+    def limitPosition(self):
+        pos = self.pos()
+        if not self.limitRect.contains(pos):
+            pos.setX(min(max(self.limitRect.x(), pos.x()), self.limitRect.right()))
+            pos.setY(min(max(self.limitRect.y(), pos.y()), self.limitRect.bottom()))
+            self.setPos(pos)
 
 
 ## A line between two nodes
@@ -115,12 +123,16 @@ class SamplerNodesContainer(QtGui.QGraphicsView):
         self.setTransformationAnchor(QtGui.QGraphicsView.AnchorUnderMouse)
         self.setResizeAnchor(QtGui.QGraphicsView.AnchorViewCenter)
 
+        hWidth = parent.width()/2
+        hHeight = parent.height()/2
+        pad = 10
+
         # 4 Nodes
         self.nodes = []
-        self.topLeft = self._addNode(Preferences.boundsTopLeft)
-        self.topRight = self._addNode(Preferences.boundsTopRight)
-        self.bottomRight = self._addNode(Preferences.boundsBottomRight)
-        self.bottomLeft = self._addNode(Preferences.boundsBottomLeft)
+        self.topLeft = self._addNode(Preferences.boundsTopLeft, QtCore.QRectF(pad, pad, hWidth-pad*2, hHeight-pad*2))
+        self.topRight = self._addNode(Preferences.boundsTopRight, QtCore.QRectF(hWidth+pad, pad, hWidth-pad*2, hHeight-pad*2))
+        self.bottomRight = self._addNode(Preferences.boundsBottomRight, QtCore.QRectF(hWidth+pad, hHeight+pad, hWidth-pad*2, hHeight-pad*2))
+        self.bottomLeft = self._addNode(Preferences.boundsBottomLeft, QtCore.QRectF(pad, hHeight+pad, hWidth-pad*2, hHeight-pad*2))
 
         # Lines
         self.lines = []
@@ -140,8 +152,8 @@ class SamplerNodesContainer(QtGui.QGraphicsView):
         pos[1] = max(0, min(1, pos[1]))
         return [pos[0] * self.scene.width(), pos[1] * self.scene.height()]
 
-    def _addNode(self, normalizedPos):
-        node = SamplerBoundsNode(self, self.normalizedPosToPixel(normalizedPos))
+    def _addNode(self, normalizedPos, limitRect):
+        node = SamplerBoundsNode(self, self.normalizedPosToPixel(normalizedPos), limitRect)
         self.nodes.append(node)
         self.scene.addItem(node)
         return node

@@ -161,6 +161,8 @@ class SamplerNodesContainer(QtGui.QGraphicsView):
 
 
 class Sampler(QtGui.QLabel):
+    nodesUpdated = QtCore.pyqtSignal()
+
     def __init__(self, parent):
         super(Sampler, self).__init__(parent)
         log.info("Initializing Sampler")
@@ -187,5 +189,5 @@ class Sampler(QtGui.QLabel):
     def on_nodesContainer_nodesMoved(self, finishedMoving):
         self.update()
         if finishedMoving:
-            # todo: save bounds after move
-            log.warning("TODO: save bounds")
+            log.debug("Sampler bounds nodes moved")
+            self.nodesUpdated.emit()

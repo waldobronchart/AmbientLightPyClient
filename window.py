@@ -8,7 +8,6 @@ import preferences
 Preferences = preferences.Preferences.Instance
 
 
-# todo: window position
 # todo: server tab
 # todo: write a statusbar logger
 # todo: make window shadow transparent to events
@@ -27,6 +26,7 @@ class MainWindow(QtGui.QMainWindow):
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground, True)
         self.ui = ui.Ui_MainWindow()
         self.window_handle = self.ui.setupUi(self)
+        self.move(Preferences.windowPos[0], Preferences.windowPos[1])
         self.ui.tabWidget.setCurrentIndex(1)
 
         # Setup drop shadow effects
@@ -40,7 +40,8 @@ class MainWindow(QtGui.QMainWindow):
         self.addDropShadowToText(self.ui.statusLabel)
 
         # The Sampler widget (this allows for selection of the tv sample bounds)
-        self.ui.sampler = Sampler(self.ui.samplerTab)
+        self.sampler = Sampler(self.ui.samplerTab)
+        self.sampler.nodesUpdated.connect(self.on_sampler_nodesUpdated)
 
         # The colors tab
         self.initializeColorsTab()
@@ -88,12 +89,19 @@ class MainWindow(QtGui.QMainWindow):
         if self.titleBarClicked and e.button() == QtCore.Qt.LeftButton:
             self.titleBarClicked = False
 
+    def closeEvent(self, e):
+        log.debug("Window closing")
+        self.updateAndSaveSettings()
+
     def on_tabWidget_currentChanged(self, index):
         if isinstance(index, int):
             # Shamelessly position the arrow over the currently selected tab
             arrowOffset = QtCore.QPoint(198, 22)
             tabRect = self.ui.tabWidget.tabBar().tabRect(index)
             self.ui.tabSelectionArrow.move(tabRect.center() + arrowOffset)
+
+    def on_sampler_nodesUpdated(self):
+        self.updateAndSaveSettings()
 
     def on_fadeDurationSlider_valueChanged(self, value):
         self.ui.fadeDurationLabel.setText("FADE DURATION (%ims)" % value)
@@ -138,13 +146,27 @@ class MainWindow(QtGui.QMainWindow):
         if not self.initialized:
             return
         
-        Preferences.fadeDelayMs = self.ui.fadeDurationSlider.value()
+        Preferences.windowPos = [self.x(), self.y()]
 
+        # Bounds
+        width = self.sampler.width()
+        height = self.sampler.height()
+        
+        topLeft = self.sampler.nodesContainer.topLeft.pos()
+        Preferences.boundsTopLeft = [topLeft.x() / width, topLeft.y() / height]
+        topRight = self.sampler.nodesContainer.topRight.pos()
+        Preferences.boundsTopRight = [topRight.x() / width, topRight.y() / height]
+        bottomRight = self.sampler.nodesContainer.bottomRight.pos()
+        Preferences.boundsBottomRight = [bottomRight.x() / width, bottomRight.y() / height]
+        bottomLeft = self.sampler.nodesContainer.bottomLeft.pos()
+        Preferences.boundsBottomLeft = [bottomLeft.x() / width, bottomLeft.y() / height]
+
+        # Color tab
+        Preferences.fadeDelayMs = self.ui.fadeDurationSlider.value()
         Preferences.fixedColorEnabled = self.ui.colorHueCheckBox.isChecked()
         Preferences.colorHue = self.ui.colorHueSlider.value()
         Preferences.colorSaturation = self.ui.colorSaturationSlider.value()
         Preferences.colorBrightness = self.ui.colorBrightnessSlider.value()
-
         Preferences.camSaturation = self.ui.camSaturationSlider.value()
         Preferences.camBrightness = self.ui.camBrightnessSlider.value()
         Preferences.camContrast = self.ui.camContrastSlider.value()

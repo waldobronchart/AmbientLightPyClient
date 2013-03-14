@@ -35,9 +35,9 @@ class MainWindow(QtGui.QMainWindow):
         dropShadowEffect.setColor(QtGui.QColor("#000000"))
         dropShadowEffect.setOffset(0,0)
         self.ui.shadowPadding.setGraphicsEffect(dropShadowEffect)
-        self.addDropShadowToText(self.ui.titleLabel)
-        self.addDropShadowToText(self.ui.statusBarWarningLabel)
-        self.addDropShadowToText(self.ui.statusLabel)
+        self.addDropShadowToText(self.ui.titleLabel, "#343434")
+        self.addDropShadowToText(self.ui.statusBarWarningLabel, "#343434")
+        self.addDropShadowToText(self.ui.statusLabel, "#343434")
 
         # The Sampler widget (this allows for selection of the tv sample bounds)
         self.sampler = Sampler(self.ui.samplerTab)
@@ -45,6 +45,14 @@ class MainWindow(QtGui.QMainWindow):
 
         # The colors tab
         self.initializeColorsTab()
+        self.addDropShadowToText(self.ui.fadeDurationLabel, "#121618")
+        self.addDropShadowToText(self.ui.colorHueLabel, "#121618")
+        self.addDropShadowToText(self.ui.colorSaturationLabel, "#121618")
+        self.addDropShadowToText(self.ui.colorBrightnessLabel, "#121618")
+        self.addDropShadowToText(self.ui.camSaturationLabel, "#121618")
+        self.addDropShadowToText(self.ui.camBrightnessLabel, "#121618")
+        self.addDropShadowToText(self.ui.camContrastLabel, "#121618")
+        self.addDropShadowToText(self.ui.camGainLabel, "#121618")
 
         # All done
         self.initialized = True
@@ -66,10 +74,10 @@ class MainWindow(QtGui.QMainWindow):
         self.ui.colorHueCheckBox.toggle()
         self.ui.colorHueCheckBox.toggle()
 
-    def addDropShadowToText(self, label):
+    def addDropShadowToText(self, label, hexCode):
         dropShadowEffect = QtGui.QGraphicsDropShadowEffect(self)
         dropShadowEffect.setBlurRadius(0)
-        dropShadowEffect.setColor(QtGui.QColor("#343434"))
+        dropShadowEffect.setColor(QtGui.QColor(hexCode))
         dropShadowEffect.setOffset(0,1)
         label.setGraphicsEffect(dropShadowEffect)
 

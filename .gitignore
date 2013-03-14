@@ -1,9 +1,6 @@
 *.idea
-logs/
-
-
-
-
+logs
+preferences.json
 
 #################
 ## Eclipse
@@ -168,5 +165,3 @@ pip-log.txt
 
 # Mac crap
 .DS_Store
-
-

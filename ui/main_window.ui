@@ -35,16 +35,21 @@
 	font-size: 9pt;
 }
 
-#contentFrame {
-	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 
-	stop:0 rgba(53, 58, 62, 0), 
-	stop:0.05 rgba(53, 58, 62, 0), 
-	stop:0.051 rgba(53, 58, 62, 255), 
-	stop:0.96 rgba(53, 58, 62, 255), 
-	stop:0.961 rgba(53, 58, 62, 0), 
-	stop:1 rgba(53, 58, 62, 0));
-}
 
+QPushButton {
+	font-family: Arial, sans-serif;
+	color: #ffffff;
+	font-size: 9pt;
+	border-image: url(:ui/resources/button.png) 8 8 8 8;
+	border: 8px;
+	padding: 0 12px 2px 12px;
+}
+QPushButton:hover {
+	border-image: url(:ui/resources/button_hover.png) 8 8 8 8;
+}
+QPushButton:pressed {
+	border-image: url(:ui/resources/button_pressed.png) 8 8 8 8;
+}
 
 
 QSlider::groove:horizontal {
@@ -54,84 +59,67 @@ QSlider::groove:horizontal {
 	margin: 0 3px 0 3px;
 	height: 14px;
 }
-
 QSlider::sub-page:horizontal {
 	border-image: url(:ui/resources/slider_bg_fill.png) 0 8 0 8;
 	border-left: 8px;
 	border-right: 8px;
 	margin: 1px 0 2px 4px;
 }
-
 QSlider::handle:horizontal {
 	background-image: url(:ui/resources/slider_handle.png);
 	width: 22px;
 	height: 22px;
 	margin: -2px -14px -4px -9px;
 }
-
 QSlider::handle:horizontal:hover {
 	background-image: url(:ui/resources/slider_handle_hover.png);
 }
-
 QSlider::handle:horizontal:pressed {
 	background-image: url(:ui/resources/slider_handle_pressed.png);
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
+QLineEdit {
+	font-family: Arial, sans-serif;
+	color: #8f8f8f;
+	font-size: 9pt;
+	border-image: url(:ui/resources/textbox.png) 6 6 6 6;
+	border: 6px;
+}
+QLineEdit:hover {
+	border-image: url(:ui/resources/textbox_hover.png) 6 6 6 6;
+}
+QLineEdit:focus {
+	border-image: url(:ui/resources/textbox_focus.png) 6 6 6 6;
+}
 
 
  QCheckBox {
 	margin-top: 1px;
      spacing: 5px;
  }
-
  QCheckBox::indicator {
      width: 18px;
      height: 18px;
  }
-
  QCheckBox::indicator:unchecked {
      image: url(:ui/resources/checkbox_unchecked.png);
  }
-
  QCheckBox::indicator:unchecked:hover {
      image: url(:ui/resources/checkbox_unchecked_hover.png);
  }
-
  QCheckBox::indicator:unchecked:pressed {
      image: url(:ui/resources/checkbox_checked_pressed.png);
  }
-
  QCheckBox::indicator:checked {
      image: url(:ui/resources/checkbox_checked.png);
  }
-
  QCheckBox::indicator:checked:hover {
      image: url(:ui/resources/checkbox_checked_hover.png);
  }
-
  QCheckBox::indicator:checked:pressed {
      image: url(:ui/resources/checkbox_checked_pressed.png);
- }
-
-
-
-
-
-
-
-</string>
+ }</string>
   </property>
   <property name="animated">
    <bool>true</bool>
@@ -169,6 +157,17 @@ QSlider::handle:horizontal:pressed {
         <width>640</width>
         <height>545</height>
        </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#contentFrame {
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 
+	stop:0 rgba(53, 58, 62, 0), 
+	stop:0.05 rgba(53, 58, 62, 0), 
+	stop:0.051 rgba(53, 58, 62, 255), 
+	stop:0.96 rgba(53, 58, 62, 255), 
+	stop:0.961 rgba(53, 58, 62, 0), 
+	stop:1 rgba(53, 58, 62, 0));
+}</string>
       </property>
       <property name="frameShape">
        <enum>QFrame::StyledPanel</enum>
@@ -296,7 +295,7 @@ QTabBar::tab:selected  {
         <attribute name="title">
          <string>COLORS</string>
         </attribute>
-        <widget class="QWidget" name="">
+        <widget class="QWidget" name="layoutWidget">
          <property name="geometry">
           <rect>
            <x>190</x>
@@ -310,7 +309,7 @@ QTabBar::tab:selected  {
            <number>10</number>
           </property>
           <item>
-           <spacer name="verticalSpacer_2">
+           <spacer name="colorTabTopSpacer">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
@@ -659,7 +658,7 @@ QTabBar::tab:selected  {
            </layout>
           </item>
           <item>
-           <spacer name="verticalSpacer">
+           <spacer name="colorTabBottomSpacer">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
@@ -683,6 +682,242 @@ QTabBar::tab:selected  {
         <attribute name="title">
          <string>SERVER</string>
         </attribute>
+        <widget class="QWidget" name="verticalLayoutWidget">
+         <property name="geometry">
+          <rect>
+           <x>208</x>
+           <y>0</y>
+           <width>225</width>
+           <height>467</height>
+          </rect>
+         </property>
+         <layout class="QVBoxLayout" name="serverTabLayout">
+          <item>
+           <spacer name="serverTabTopSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>70</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="ipPortLayout" stretch="2,1">
+            <property name="spacing">
+             <number>20</number>
+            </property>
+            <item>
+             <layout class="QVBoxLayout" name="ipLayout">
+              <property name="spacing">
+               <number>4</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="ipLabel">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string>HOST IP</string>
+                </property>
+                <property name="margin">
+                 <number>0</number>
+                </property>
+                <property name="indent">
+                 <number>5</number>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="ipField">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>140</width>
+                  <height>26</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>9999</width>
+                  <height>26</height>
+                 </size>
+                </property>
+                <property name="focusPolicy">
+                 <enum>Qt::StrongFocus</enum>
+                </property>
+                <property name="inputMask">
+                 <string/>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="maxLength">
+                 <number>15</number>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="portLayout">
+              <property name="spacing">
+               <number>4</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="portLabel">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string>PORT</string>
+                </property>
+                <property name="margin">
+                 <number>0</number>
+                </property>
+                <property name="indent">
+                 <number>5</number>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="portField">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>30</width>
+                  <height>26</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>9999</width>
+                  <height>26</height>
+                 </size>
+                </property>
+                <property name="focusPolicy">
+                 <enum>Qt::StrongFocus</enum>
+                </property>
+                <property name="inputMask">
+                 <string/>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="maxLength">
+                 <number>5</number>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>10</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="connectBtnLayout">
+            <item>
+             <spacer name="connectBtnSpacer2">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="connectButton">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>38</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="autoFillBackground">
+               <bool>false</bool>
+              </property>
+              <property name="text">
+               <string>Connect</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="connectBtnSpacer1">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <spacer name="serverTabBottomSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
        </widget>
       </widget>
       <widget class="QFrame" name="titleBarShadow">
@@ -766,6 +1001,7 @@ QTabBar::tab:selected  {
        <property name="styleSheet">
         <string notr="true">#titleBarCloseButton {
 	border-image: url(:ui/resources/titlebar_closebutton_bg.png) 0 6 0 6;
+	border: 0;
 	border-left: 6px;
 	border-right: 6px;
 	padding-bottom: 1px;

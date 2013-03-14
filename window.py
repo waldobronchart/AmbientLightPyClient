@@ -7,8 +7,6 @@ from logger import log
 import preferences
 Preferences = preferences.Preferences.Instance
 
-
-# todo: server tab
 # todo: write a statusbar logger
 # todo: make window shadow transparent to events
 # todo: color tab value conversions
@@ -45,15 +43,10 @@ class MainWindow(QtGui.QMainWindow):
 
         # The colors tab
         self.initializeColorsTab()
-        self.addDropShadowToText(self.ui.fadeDurationLabel, "#121618")
-        self.addDropShadowToText(self.ui.colorHueLabel, "#121618")
-        self.addDropShadowToText(self.ui.colorSaturationLabel, "#121618")
-        self.addDropShadowToText(self.ui.colorBrightnessLabel, "#121618")
-        self.addDropShadowToText(self.ui.camSaturationLabel, "#121618")
-        self.addDropShadowToText(self.ui.camBrightnessLabel, "#121618")
-        self.addDropShadowToText(self.ui.camContrastLabel, "#121618")
-        self.addDropShadowToText(self.ui.camGainLabel, "#121618")
 
+        # The server tab
+        self.initializeServerTab()
+        
         # All done
         self.initialized = True
 
@@ -73,6 +66,31 @@ class MainWindow(QtGui.QMainWindow):
         # Color tab check and uncheck to refresh ui
         self.ui.colorHueCheckBox.toggle()
         self.ui.colorHueCheckBox.toggle()
+
+        # Drop shadows
+        self.addDropShadowToText(self.ui.fadeDurationLabel, "#121618")
+        self.addDropShadowToText(self.ui.colorHueLabel, "#121618")
+        self.addDropShadowToText(self.ui.colorSaturationLabel, "#121618")
+        self.addDropShadowToText(self.ui.colorBrightnessLabel, "#121618")
+        self.addDropShadowToText(self.ui.camSaturationLabel, "#121618")
+        self.addDropShadowToText(self.ui.camBrightnessLabel, "#121618")
+        self.addDropShadowToText(self.ui.camContrastLabel, "#121618")
+        self.addDropShadowToText(self.ui.camGainLabel, "#121618")
+
+    def initializeServerTab(self):
+        splitEndpoint = Preferences.serverEndpoint.split(':')
+
+        # IP Field
+        ipValidator = QtGui.QRegExpValidator()
+        ipValidator.setRegExp(QtCore.QRegExp("((1{0,1}[0-9]{0,2}|2[0-4]{1,1}[0-9]{1,1}|25[0-5]{1,1})\\.){3,3}(1{0,1}[0-9]{0,2}|2[0-4]{1,1}[0-9]{1,1}|25[0-5]{1,1})"))
+        self.ui.ipField.setValidator(ipValidator)
+        self.ui.ipField.setText(splitEndpoint[0])
+
+        # Port Field
+        portValidator = QtGui.QRegExpValidator()
+        portValidator.setRegExp(QtCore.QRegExp("([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])"))
+        self.ui.portField.setValidator(portValidator)
+        self.ui.portField.setText(splitEndpoint[1])
 
     def addDropShadowToText(self, label, hexCode):
         dropShadowEffect = QtGui.QGraphicsDropShadowEffect(self)
@@ -94,11 +112,13 @@ class MainWindow(QtGui.QMainWindow):
             self.move(e.globalPos() - self.titleBarMoveMouseStart)
 
     def mouseReleaseEvent(self, e):
+        self.setFocus(QtCore.Qt.MouseFocusReason)
         if self.titleBarClicked and e.button() == QtCore.Qt.LeftButton:
             self.titleBarClicked = False
 
     def closeEvent(self, e):
         log.debug("Window closing")
+
         self.updateAndSaveSettings()
 
     def on_tabWidget_currentChanged(self, index):
@@ -150,16 +170,29 @@ class MainWindow(QtGui.QMainWindow):
         log.debug("camGain set to %i" % self.ui.camGainSlider.value())
         self.updateAndSaveSettings()
 
+    def on_ipField_editingFinished(self):
+        self.serverEndpointChanged()
+
+    def on_portField_editingFinished(self):
+        self.serverEndpointChanged()
+
+    def on_connectButton_clicked(self):
+        print("on_connectButton_clicked")
+
+    def serverEndpointChanged(self):
+        log.debug("serverEndpoint set to %s:%i" % (self.ui.ipField.text(), self.ui.portField.text()))
+        Preferences.serverEndpoint = "%s:%i" % (self.ui.ipField.text(), self.ui.portField.text())
+        preferences.savePreferences()
+
     def updateAndSaveSettings(self):
         if not self.initialized:
             return
-        
-        Preferences.windowPos = [self.x(), self.y()]
 
+        Preferences.windowPos = [self.x(), self.y()]
+        
         # Bounds
         width = self.sampler.width()
         height = self.sampler.height()
-        
         topLeft = self.sampler.nodesContainer.topLeft.pos()
         Preferences.boundsTopLeft = [topLeft.x() / width, topLeft.y() / height]
         topRight = self.sampler.nodesContainer.topRight.pos()

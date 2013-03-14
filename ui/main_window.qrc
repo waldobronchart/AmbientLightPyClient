@@ -1,5 +1,11 @@
 <RCC>
   <qresource prefix="ui">
+    <file>resources/button.png</file>
+    <file>resources/button_hover.png</file>
+    <file>resources/button_pressed.png</file>
+    <file>resources/textbox.png</file>
+    <file>resources/textbox_focus.png</file>
+    <file>resources/textbox_hover.png</file>
     <file>resources/checkbox_checked.png</file>
     <file>resources/checkbox_unchecked_hover.png</file>
     <file>resources/checkbox_checked_hover.png</file>

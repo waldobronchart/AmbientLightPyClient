@@ -182,7 +182,7 @@ class Sampler(QtGui.QLabel):
         self.setMinimumSize(640, 480)
 
         self.bgPixmap = QtGui.QPixmap(640, 480)
-        self.bgPixmap.fill(QtCore.Qt.black)
+        self.bgPixmap.fill(QtGui.QColor("#212426"))
         self.setScaledContents(True)
 
         self.nodesContainer = SamplerNodesContainer(self)

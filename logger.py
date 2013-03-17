@@ -31,6 +31,20 @@ class StatusBarLogger(logging.Handler):
         self.prevLogTime = time.time()
         self.logCount = 0
 
+    def createLock(self):
+        from PyQt4 import QtCore
+        self.mutex = QtCore.QMutex()
+
+    def acquire(self):
+        if 'mutex' not in self.__dict__.keys():
+            self.createLock()
+        self.mutex.lock()
+
+    def release(self):
+        if 'mutex' not in self.__dict__.keys():
+            self.createLock()
+        self.mutex.unlock()
+
     def emit(self, record):
         # Set log count
         self.logCount += 1

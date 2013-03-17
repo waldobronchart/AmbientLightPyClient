@@ -8,7 +8,8 @@ class Preferences(object):
 
     def __init__(self):
         self.windowPos = [0, 0]
-        self.serverEndpoint = '192.168.1.200:13555'
+        self.serverIp = '192.168.1.200'
+        self.serverPort = 13555
 
         self.boundsTopLeft = [0.2, 0.2]
         self.boundsTopRight = [0.8, 0.2]
@@ -18,14 +19,14 @@ class Preferences(object):
         self.totalFadeTimeMS = 200
 
         self.fixedColorEnabled = False
-        self.colorHue = 0.5
-        self.colorSaturation = 0.5
-        self.colorBrightness = 0.5
+        self.colorHue = 20
+        self.colorSaturation = 255
+        self.colorBrightness = 0
 
-        self.camSaturation = 0.29
-        self.camBrightness = 0.46
-        self.camContrast = 0.12
-        self.camGain = 0.83
+        self.camSaturation = 117
+        self.camBrightness = 30
+        self.camContrast = 74
+        self.camGain = 204
 
 ## Load prefs from file
 def loadPreferences():

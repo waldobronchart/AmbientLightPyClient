@@ -165,9 +165,16 @@ class SamplerNodesContainer(QtGui.QGraphicsView):
         return line
 
     def setBounds(self, topLeft, topRight, bottomRight, bottomLeft):
+        topLeft = self.normalizedPosToPixel(topLeft)
         self.topLeft.setPos(topLeft[0], topLeft[1])
+
+        topRight = self.normalizedPosToPixel(topRight)
         self.topRight.setPos(topRight[0], topRight[1])
+
+        bottomRight = self.normalizedPosToPixel(bottomRight)
         self.bottomRight.setPos(bottomRight[0], bottomRight[1])
+
+        bottomLeft = self.normalizedPosToPixel(bottomLeft)
         self.bottomLeft.setPos(bottomLeft[0], bottomLeft[1])
 
 
@@ -177,7 +184,7 @@ class Sampler(QtGui.QLabel):
 
     def __init__(self, parent):
         super(Sampler, self).__init__(parent)
-        log.info("Initializing Sampler")
+        log.debug("initializing Sampler")
 
         self.setMinimumSize(640, 480)
 
@@ -197,6 +204,14 @@ class Sampler(QtGui.QLabel):
         image = QtGui.QImage(buffer, bufferWidth, bufferHeight, 0, QtGui.QImage.Format_RGB888)
         pixmap = QtGui.QPixmap.fromImage(image)
         self.setPixmap(pixmap)
+
+    def setBounds(self, topLeft, topRight, bottomRight, bottomLeft):
+        log.debug("Bounds updated to:")
+        log.debug("  - topLeft: %s" % topLeft)
+        log.debug("  - topRight: %s" % topRight)
+        log.debug("  - bottomRight: %s" % bottomRight)
+        log.debug("  - bottomLeft: %s" % bottomLeft)
+        self.nodesContainer.setBounds(topLeft, topRight, bottomRight, bottomLeft)
 
     def on_nodesContainer_nodesMoved(self, finishedMoving):
         self.update()

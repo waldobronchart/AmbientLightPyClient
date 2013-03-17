@@ -6,13 +6,14 @@ from PyQt4 import QtGui, QtCore
 import ui
 from widget_sampler import Sampler
 from logger import log, StatusBarLogger
+from server_communication import ServerCommunication
 import preferences
 Preferences = preferences.Preferences.Instance
 
 # todo: server communication
-# todo: color tab value conversions
 # todo: sampler tab loading frame?
 # todo: server tab not connected warning
+# todo: make it an exe or bat?
 class MainWindow(QtGui.QMainWindow):
     Instance = None
 
@@ -32,31 +33,62 @@ class MainWindow(QtGui.QMainWindow):
         self.ui.tabWidget.setCurrentIndex(1)
 
         # Status bar
-        self.addDropShadowToText(self.ui.statusBarCountLabel, "#343434")
-        self.addDropShadowToText(self.ui.statusLabel, "#343434")
+        self._addDropShadowToText(self.ui.statusBarCountLabel, "#343434")
+        self._addDropShadowToText(self.ui.statusLabel, "#343434")
         self.statusBarLogger = StatusBarLogger(self)
 
-        # Setup drop shadow effects
+        # Setup drop shadow effect on window
         dropShadowEffect = QtGui.QGraphicsDropShadowEffect(self)
         dropShadowEffect.setBlurRadius(20)
         dropShadowEffect.setColor(QtGui.QColor("#000000"))
         dropShadowEffect.setOffset(0,0)
         self.ui.shadowPadding.setGraphicsEffect(dropShadowEffect)
-        self.addDropShadowToText(self.ui.titleLabel, "#343434")
+        self._addDropShadowToText(self.ui.titleLabel, "#343434")
 
         # The Sampler widget (this allows for selection of the tv sample bounds)
         self.sampler = Sampler(self.ui.samplerTab)
         self.sampler.nodesUpdated.connect(self.on_sampler_nodesUpdated)
 
-        # The tabs
-        self.initializeColorsTab()
-        self.initializeServerTab()
+        # Color tab
+        self.updateColorTabFromSettings()
+        self._addDropShadowToText(self.ui.fadeDurationLabel, "#121618")
+        self._addDropShadowToText(self.ui.colorHueLabel, "#121618")
+        self._addDropShadowToText(self.ui.colorSaturationLabel, "#121618")
+        self._addDropShadowToText(self.ui.colorBrightnessLabel, "#121618")
+        self._addDropShadowToText(self.ui.camSaturationLabel, "#121618")
+        self._addDropShadowToText(self.ui.camBrightnessLabel, "#121618")
+        self._addDropShadowToText(self.ui.camContrastLabel, "#121618")
+        self._addDropShadowToText(self.ui.camGainLabel, "#121618")
+
+        # Server tab
+        ipValidator = QtGui.QRegExpValidator()
+        ipValidator.setRegExp(QtCore.QRegExp("((1{0,1}[0-9]{0,2}|2[0-4]{1,1}[0-9]{1,1}|25[0-5]{1,1})\\.){3,3}(1{0,1}[0-9]{0,2}|2[0-4]{1,1}[0-9]{1,1}|25[0-5]{1,1})"))
+        self.ui.ipField.setValidator(ipValidator)
+        self.ui.ipField.setText(Preferences.serverIp)
+        self._addDropShadowToText(self.ui.ipLabel, "#121618")
+
+        portValidator = QtGui.QRegExpValidator()
+        portValidator.setRegExp(QtCore.QRegExp("([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])"))
+        self.ui.portField.setValidator(portValidator)
+        self.ui.portField.setText(str(Preferences.serverPort))
+        self._addDropShadowToText(self.ui.portLabel, "#121618")
+
+        # Server communication
+        self.serverComm = ServerCommunication()
+        self.serverComm.connectTo(Preferences.serverIp, Preferences.serverPort)
+        self.updateLoopTimer = QtCore.QTimer()
+        self.updateLoopTimer.setSingleShot(False)
+        self.updateLoopTimer.timeout.connect(self.updateLoop)
+        self.updateLoopTimer.start(33.33)
+        self.frameGrabTimer = QtCore.QTimer()
+        self.frameGrabTimer.setSingleShot(False)
+        self.frameGrabTimer.timeout.connect(self.requestFrame)
+        self.frameGrabTimer.start(2000)
         
         # All done
         self.initialized = True
 
-    def initializeColorsTab(self):
-        log.debug("initializeColorsTab")
+    def updateColorTabFromSettings(self):
         self.ui.fadeDurationSlider.setValue(Preferences.totalFadeTimeMS)
 
         self.ui.colorHueCheckBox.setChecked(Preferences.fixedColorEnabled)
@@ -73,38 +105,27 @@ class MainWindow(QtGui.QMainWindow):
         self.ui.colorHueCheckBox.toggle()
         self.ui.colorHueCheckBox.toggle()
 
-        # Drop shadows
-        self.addDropShadowToText(self.ui.fadeDurationLabel, "#121618")
-        self.addDropShadowToText(self.ui.colorHueLabel, "#121618")
-        self.addDropShadowToText(self.ui.colorSaturationLabel, "#121618")
-        self.addDropShadowToText(self.ui.colorBrightnessLabel, "#121618")
-        self.addDropShadowToText(self.ui.camSaturationLabel, "#121618")
-        self.addDropShadowToText(self.ui.camBrightnessLabel, "#121618")
-        self.addDropShadowToText(self.ui.camContrastLabel, "#121618")
-        self.addDropShadowToText(self.ui.camGainLabel, "#121618")
-
-    def initializeServerTab(self):
-        log.debug("initializeServerTab")
-        splitEndpoint = Preferences.serverEndpoint.split(':')
-
-        # IP Field
-        ipValidator = QtGui.QRegExpValidator()
-        ipValidator.setRegExp(QtCore.QRegExp("((1{0,1}[0-9]{0,2}|2[0-4]{1,1}[0-9]{1,1}|25[0-5]{1,1})\\.){3,3}(1{0,1}[0-9]{0,2}|2[0-4]{1,1}[0-9]{1,1}|25[0-5]{1,1})"))
-        self.ui.ipField.setValidator(ipValidator)
-        self.ui.ipField.setText(splitEndpoint[0])
-
-        # Port Field
-        portValidator = QtGui.QRegExpValidator()
-        portValidator.setRegExp(QtCore.QRegExp("([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])"))
-        self.ui.portField.setValidator(portValidator)
-        self.ui.portField.setText(splitEndpoint[1])
-
-    def addDropShadowToText(self, label, hexCode):
+    def _addDropShadowToText(self, label, hexCode):
         dropShadowEffect = QtGui.QGraphicsDropShadowEffect(self)
         dropShadowEffect.setBlurRadius(0)
         dropShadowEffect.setColor(QtGui.QColor(hexCode))
         dropShadowEffect.setOffset(0,1)
         label.setGraphicsEffect(dropShadowEffect)
+
+    def updateLoop(self):
+        # Slow update loop if not connected
+        if not self.serverComm.isConnected:
+            self.updateLoopTimer.setInterval(5000)
+            self.ui.connectButton.show()
+            
+        self.serverComm.processIncomingMessages()
+
+    def requestFrame(self):
+        if self.serverComm.isConnected and self.ui.tabWidget.currentIndex() == 0:
+            log.info("Requesting frame from server...")
+            from server_messages import MsgGenericRequest
+            msg = MsgGenericRequest("getframebuffer")
+            self.serverComm.sendMessage(msg)
 
     def mousePressEvent(self, e):
         # Is mouse over the titlebar?
@@ -125,6 +146,8 @@ class MainWindow(QtGui.QMainWindow):
 
     def closeEvent(self, e):
         log.debug("Window closing")
+        self.serverComm.disconnect()
+        self.serverComm.stopThread()
         self.updateAndSaveSettings()
 
     def on_tabWidget_currentChanged(self, index):
@@ -136,6 +159,8 @@ class MainWindow(QtGui.QMainWindow):
 
     def on_sampler_nodesUpdated(self):
         self.updateAndSaveSettings()
+        from server_messages import MsgSetBounds
+        self.serverComm.sendMessage(MsgSetBounds())
 
     def on_fadeDurationSlider_valueChanged(self, value):
         self.ui.fadeDurationLabel.setText("FADE DURATION (%ims)" % value)
@@ -177,18 +202,24 @@ class MainWindow(QtGui.QMainWindow):
         self.updateAndSaveSettings()
 
     def on_ipField_editingFinished(self):
-        self.serverEndpointChanged()
+        if Preferences.serverIp != self.ui.ipField.text():
+            self.serverEndpointChanged()
 
     def on_portField_editingFinished(self):
-        self.serverEndpointChanged()
-
-    def on_connectButton_clicked(self):
-        log.info("on_connectButton_clicked")
+        if Preferences.serverPort != int(self.ui.portField.text()):
+            self.serverEndpointChanged()
 
     def serverEndpointChanged(self):
-        log.debug("serverEndpoint set to %s:%i" % (self.ui.ipField.text(), self.ui.portField.text()))
-        Preferences.serverEndpoint = "%s:%i" % (self.ui.ipField.text(), self.ui.portField.text())
+        log.debug("serverEndpoint set to %s:%s" % (self.ui.ipField.text(), self.ui.portField.text()))
+        Preferences.serverIp = self.ui.ipField.text()
+        Preferences.serverPort = int(self.ui.portField.text())
         preferences.savePreferences()
+        self.ui.connectButton.show()
+
+    def on_connectButton_clicked(self, *args):
+        if not args:
+            self.serverComm.connectTo(Preferences.serverIp, Preferences.serverPort)
+            self.ui.connectButton.hide()
 
     def updateAndSaveSettings(self):
         if not self.initialized:
@@ -219,7 +250,10 @@ class MainWindow(QtGui.QMainWindow):
         Preferences.camContrast = self.ui.camContrastSlider.value()
         Preferences.camGain = self.ui.camGainSlider.value()
 
+        # Save and update server
         preferences.savePreferences()
+        from server_messages import MsgSetColorSettings
+        self.serverComm.sendMessage(MsgSetColorSettings())
 
 
 ## Show the main window

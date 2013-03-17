@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="ui">
+    <file>resources/icon_error.png</file>
+    <file>resources/icon_info.png</file>
     <file>resources/button.png</file>
     <file>resources/button_hover.png</file>
     <file>resources/button_pressed.png</file>

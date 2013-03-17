@@ -1,19 +1,23 @@
+import time
+
 __author__ = 'Waldo'
 
 from PyQt4 import QtGui, QtCore
 import ui
 from widget_sampler import Sampler
-from logger import log
+from logger import log, StatusBarLogger
 import preferences
 Preferences = preferences.Preferences.Instance
 
-# todo: write a statusbar logger
-# todo: make window shadow transparent to events
+# todo: server communication
 # todo: color tab value conversions
+# todo: sampler tab loading frame?
+# todo: server tab not connected warning
 class MainWindow(QtGui.QMainWindow):
     Instance = None
 
     def __init__(self):
+        log.debug("initializing MainWindow")
         super(MainWindow, self).__init__()
         MainWindow.Instance = self
         self.titleBarClicked = False
@@ -27,6 +31,11 @@ class MainWindow(QtGui.QMainWindow):
         self.move(Preferences.windowPos[0], Preferences.windowPos[1])
         self.ui.tabWidget.setCurrentIndex(1)
 
+        # Status bar
+        self.addDropShadowToText(self.ui.statusBarCountLabel, "#343434")
+        self.addDropShadowToText(self.ui.statusLabel, "#343434")
+        self.statusBarLogger = StatusBarLogger(self)
+
         # Setup drop shadow effects
         dropShadowEffect = QtGui.QGraphicsDropShadowEffect(self)
         dropShadowEffect.setBlurRadius(20)
@@ -34,24 +43,21 @@ class MainWindow(QtGui.QMainWindow):
         dropShadowEffect.setOffset(0,0)
         self.ui.shadowPadding.setGraphicsEffect(dropShadowEffect)
         self.addDropShadowToText(self.ui.titleLabel, "#343434")
-        self.addDropShadowToText(self.ui.statusBarWarningLabel, "#343434")
-        self.addDropShadowToText(self.ui.statusLabel, "#343434")
 
         # The Sampler widget (this allows for selection of the tv sample bounds)
         self.sampler = Sampler(self.ui.samplerTab)
         self.sampler.nodesUpdated.connect(self.on_sampler_nodesUpdated)
 
-        # The colors tab
+        # The tabs
         self.initializeColorsTab()
-
-        # The server tab
         self.initializeServerTab()
         
         # All done
         self.initialized = True
 
     def initializeColorsTab(self):
-        self.ui.fadeDurationSlider.setValue(Preferences.fadeDelayMs)
+        log.debug("initializeColorsTab")
+        self.ui.fadeDurationSlider.setValue(Preferences.totalFadeTimeMS)
 
         self.ui.colorHueCheckBox.setChecked(Preferences.fixedColorEnabled)
         self.ui.colorHueSlider.setValue(Preferences.colorHue)
@@ -78,6 +84,7 @@ class MainWindow(QtGui.QMainWindow):
         self.addDropShadowToText(self.ui.camGainLabel, "#121618")
 
     def initializeServerTab(self):
+        log.debug("initializeServerTab")
         splitEndpoint = Preferences.serverEndpoint.split(':')
 
         # IP Field
@@ -118,7 +125,6 @@ class MainWindow(QtGui.QMainWindow):
 
     def closeEvent(self, e):
         log.debug("Window closing")
-
         self.updateAndSaveSettings()
 
     def on_tabWidget_currentChanged(self, index):
@@ -177,7 +183,7 @@ class MainWindow(QtGui.QMainWindow):
         self.serverEndpointChanged()
 
     def on_connectButton_clicked(self):
-        print("on_connectButton_clicked")
+        log.info("on_connectButton_clicked")
 
     def serverEndpointChanged(self):
         log.debug("serverEndpoint set to %s:%i" % (self.ui.ipField.text(), self.ui.portField.text()))
@@ -203,7 +209,7 @@ class MainWindow(QtGui.QMainWindow):
         Preferences.boundsBottomLeft = [bottomLeft.x() / width, bottomLeft.y() / height]
 
         # Color tab
-        Preferences.fadeDelayMs = self.ui.fadeDurationSlider.value()
+        Preferences.totalFadeTimeMS = self.ui.fadeDurationSlider.value()
         Preferences.fixedColorEnabled = self.ui.colorHueCheckBox.isChecked()
         Preferences.colorHue = self.ui.colorHueSlider.value()
         Preferences.colorSaturation = self.ui.colorSaturationSlider.value()

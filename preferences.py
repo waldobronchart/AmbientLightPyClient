@@ -15,7 +15,7 @@ class Preferences(object):
         self.boundsBottomRight = [0.8, 0.8]
         self.boundsBottomLeft = [0.2, 0.8]
 
-        self.fadeDelayMs = 200
+        self.totalFadeTimeMS = 200
 
         self.fixedColorEnabled = False
         self.colorHue = 0.5
@@ -48,6 +48,7 @@ def loadPreferences():
                 log.debug(" - %s = %s", attr, value)
         
         file.close()
+        log.info("Preferences loaded")
 
     except Exception as ex:
         log.error("Failed to load preferences from file", ex)
@@ -59,3 +60,4 @@ def savePreferences():
     file = open(PREFERENCES_FILE, 'w')
     file.write(jsonStr)
     file.close()
+    log.info("Preferences saved")

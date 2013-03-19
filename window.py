@@ -1,4 +1,4 @@
-import time
+import colorsys
 
 __author__ = 'Waldo'
 
@@ -10,7 +10,7 @@ from server_communication import ServerCommunication
 import preferences
 Preferences = preferences.Preferences.Instance
 
-# todo: server communication
+# todo: test servercommunication
 # todo: sampler tab loading frame?
 # todo: server tab not connected warning
 # todo: make it an exe or bat?
@@ -249,6 +249,10 @@ class MainWindow(QtGui.QMainWindow):
         Preferences.camBrightness = self.ui.camBrightnessSlider.value()
         Preferences.camContrast = self.ui.camContrastSlider.value()
         Preferences.camGain = self.ui.camGainSlider.value()
+
+        # debug
+        rgb = colorsys.hsv_to_rgb(Preferences.colorHue/100.0, Preferences.colorSaturation/100.0, Preferences.colorBrightness/100.0)
+        self.ui.COLORFRAME.setStyleSheet("#COLORFRAME { background: rgb("+str(int(rgb[0]*255))+", "+str(int(rgb[1]*255))+", "+str(int(rgb[2]*255))+"); }")
 
         # Save and update server
         preferences.savePreferences()

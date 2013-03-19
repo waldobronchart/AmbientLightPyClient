@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main_window.ui'
 #
-# Created: Sun Mar 17 12:42:27 2013
+# Created: Tue Mar 19 21:08:49 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -268,7 +268,7 @@ class Ui_MainWindow(object):
 "#colorHueSlider::sub-page:horizontal {\n"
 "    border-image: none;\n"
 "}"))
-        self.colorHueSlider.setMaximum(1000)
+        self.colorHueSlider.setMaximum(100)
         self.colorHueSlider.setProperty("value", 50)
         self.colorHueSlider.setOrientation(QtCore.Qt.Horizontal)
         self.colorHueSlider.setObjectName(_fromUtf8("colorHueSlider"))
@@ -284,9 +284,9 @@ class Ui_MainWindow(object):
         self.colorSaturationLabel.setObjectName(_fromUtf8("colorSaturationLabel"))
         self.colorSaturationLayout.addWidget(self.colorSaturationLabel)
         self.colorSaturationSlider = QtGui.QSlider(self.layoutWidget)
-        self.colorSaturationSlider.setMaximum(255)
+        self.colorSaturationSlider.setMaximum(100)
         self.colorSaturationSlider.setPageStep(10)
-        self.colorSaturationSlider.setProperty("value", 200)
+        self.colorSaturationSlider.setProperty("value", 100)
         self.colorSaturationSlider.setOrientation(QtCore.Qt.Horizontal)
         self.colorSaturationSlider.setObjectName(_fromUtf8("colorSaturationSlider"))
         self.colorSaturationLayout.addWidget(self.colorSaturationSlider)
@@ -300,10 +300,10 @@ class Ui_MainWindow(object):
         self.colorBrightnessLabel.setObjectName(_fromUtf8("colorBrightnessLabel"))
         self.colorBrightnessLayout.addWidget(self.colorBrightnessLabel)
         self.colorBrightnessSlider = QtGui.QSlider(self.layoutWidget)
-        self.colorBrightnessSlider.setMinimum(-100)
+        self.colorBrightnessSlider.setMinimum(0)
         self.colorBrightnessSlider.setMaximum(100)
         self.colorBrightnessSlider.setPageStep(10)
-        self.colorBrightnessSlider.setProperty("value", 0)
+        self.colorBrightnessSlider.setProperty("value", 50)
         self.colorBrightnessSlider.setOrientation(QtCore.Qt.Horizontal)
         self.colorBrightnessSlider.setObjectName(_fromUtf8("colorBrightnessSlider"))
         self.colorBrightnessLayout.addWidget(self.colorBrightnessSlider)
@@ -374,6 +374,12 @@ class Ui_MainWindow(object):
         self.colorsTabLayout.addLayout(self.camGainLayout)
         spacerItem2 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.colorsTabLayout.addItem(spacerItem2)
+        self.COLORFRAME = QtGui.QFrame(self.colorsTab)
+        self.COLORFRAME.setGeometry(QtCore.QRect(461, 134, 39, 36))
+        self.COLORFRAME.setStyleSheet(_fromUtf8("#COLORFRAME { background: rgb(255, 0, 0); }"))
+        self.COLORFRAME.setFrameShape(QtGui.QFrame.StyledPanel)
+        self.COLORFRAME.setFrameShadow(QtGui.QFrame.Raised)
+        self.COLORFRAME.setObjectName(_fromUtf8("COLORFRAME"))
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/ui/resources/icon_colors.png")), QtGui.QIcon.Normal, QtGui.QIcon.On)
         self.tabWidget.addTab(self.colorsTab, icon1, _fromUtf8(""))

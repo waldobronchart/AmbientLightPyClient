@@ -109,9 +109,9 @@ class MsgPreferences(NetMessage):
         Preferences.fixedColorEnabled = json_data['fixedColorEnabled']
         rgb = json_data['fixedColor']
         hsv = colorsys.rgb_to_hsv(rgb[0]/255.0, rgb[0]/255.0, rgb[0]/255.0)
-        Preferences.colorHue = hsv[0]
-        Preferences.colorSaturation = hsv[1]
-        Preferences.colorBrightness = hsv[2]
+        Preferences.colorHue = int(hsv[0]*100)
+        Preferences.colorSaturation = int(hsv[1]*100)
+        Preferences.colorBrightness = int(hsv[2]*100)
 
         Preferences.camSaturation = json_data['camSaturation']
         Preferences.camBrightness = json_data['camBrightness']
@@ -149,7 +149,7 @@ class MsgSetColorSettings(NetMessage):
         self.totalFadeTimeMS = Preferences.totalFadeTimeMS
         
         self.fixedColorEnabled = Preferences.fixedColorEnabled
-        rgbColor = colorsys.hsv_to_rgb(Preferences.colorHue, Preferences.colorSaturation, Preferences.colorBrightness)
+        rgbColor = colorsys.hsv_to_rgb(Preferences.colorHue/100.0, Preferences.colorSaturation/100.0, Preferences.colorBrightness/100.0)
         self.fixedColor = (int(rgbColor[0]*255), int(rgbColor[1]*255), int(rgbColor[1]*255))
 
         self.camSaturation = Preferences.camSaturation

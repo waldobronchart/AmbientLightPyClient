@@ -423,7 +423,7 @@ QTabBar::tab:selected  {
 }</string>
               </property>
               <property name="maximum">
-               <number>1000</number>
+               <number>100</number>
               </property>
               <property name="value">
                <number>50</number>
@@ -459,13 +459,13 @@ QTabBar::tab:selected  {
             <item>
              <widget class="QSlider" name="colorSaturationSlider">
               <property name="maximum">
-               <number>255</number>
+               <number>100</number>
               </property>
               <property name="pageStep">
                <number>10</number>
               </property>
               <property name="value">
-               <number>200</number>
+               <number>100</number>
               </property>
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
@@ -495,7 +495,7 @@ QTabBar::tab:selected  {
             <item>
              <widget class="QSlider" name="colorBrightnessSlider">
               <property name="minimum">
-               <number>-100</number>
+               <number>0</number>
               </property>
               <property name="maximum">
                <number>100</number>
@@ -504,7 +504,7 @@ QTabBar::tab:selected  {
                <number>10</number>
               </property>
               <property name="value">
-               <number>0</number>
+               <number>50</number>
               </property>
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
@@ -671,6 +671,25 @@ QTabBar::tab:selected  {
            </spacer>
           </item>
          </layout>
+        </widget>
+        <widget class="QFrame" name="COLORFRAME">
+         <property name="geometry">
+          <rect>
+           <x>461</x>
+           <y>134</y>
+           <width>39</width>
+           <height>36</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">#COLORFRAME { background: rgb(255, 0, 0); }</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
         </widget>
        </widget>
        <widget class="QWidget" name="serverTab">

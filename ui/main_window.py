@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main_window.ui'
 #
-# Created: Tue Mar 19 21:08:49 2013
+# Created: Sat May 11 18:39:22 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -233,7 +233,7 @@ class Ui_MainWindow(object):
         self.fadeDurationLabel.setObjectName(_fromUtf8("fadeDurationLabel"))
         self.fadeDurationLayout.addWidget(self.fadeDurationLabel)
         self.fadeDurationSlider = QtGui.QSlider(self.layoutWidget)
-        self.fadeDurationSlider.setMaximum(1000)
+        self.fadeDurationSlider.setMaximum(2000)
         self.fadeDurationSlider.setSingleStep(1)
         self.fadeDurationSlider.setPageStep(10)
         self.fadeDurationSlider.setProperty("value", 200)
@@ -254,6 +254,18 @@ class Ui_MainWindow(object):
         self.colorHueLabelLayout.addWidget(self.colorHueLabel)
         spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.colorHueLabelLayout.addItem(spacerItem1)
+        self.colorPreview = QtGui.QLabel(self.layoutWidget)
+        self.colorPreview.setMinimumSize(QtCore.QSize(40, 16))
+        self.colorPreview.setMaximumSize(QtCore.QSize(40, 16))
+        self.colorPreview.setStyleSheet(_fromUtf8("#colorPreview {\n"
+"    border: 4px;\n"
+"    border-image: url(:/ui/resources/color_preview.png) 4 4 4 4;\n"
+"    background-color: #ff0000;\n"
+"    margin-right: 4px;\n"
+"}"))
+        self.colorPreview.setText(_fromUtf8(""))
+        self.colorPreview.setObjectName(_fromUtf8("colorPreview"))
+        self.colorHueLabelLayout.addWidget(self.colorPreview)
         self.colorHueCheckBox = QtGui.QCheckBox(self.layoutWidget)
         self.colorHueCheckBox.setText(_fromUtf8(""))
         self.colorHueCheckBox.setChecked(True)
@@ -374,12 +386,6 @@ class Ui_MainWindow(object):
         self.colorsTabLayout.addLayout(self.camGainLayout)
         spacerItem2 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.colorsTabLayout.addItem(spacerItem2)
-        self.COLORFRAME = QtGui.QFrame(self.colorsTab)
-        self.COLORFRAME.setGeometry(QtCore.QRect(461, 134, 39, 36))
-        self.COLORFRAME.setStyleSheet(_fromUtf8("#COLORFRAME { background: rgb(255, 0, 0); }"))
-        self.COLORFRAME.setFrameShape(QtGui.QFrame.StyledPanel)
-        self.COLORFRAME.setFrameShadow(QtGui.QFrame.Raised)
-        self.COLORFRAME.setObjectName(_fromUtf8("COLORFRAME"))
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/ui/resources/icon_colors.png")), QtGui.QIcon.Normal, QtGui.QIcon.On)
         self.tabWidget.addTab(self.colorsTab, icon1, _fromUtf8(""))
@@ -638,6 +644,7 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.colorHueCheckBox, QtCore.SIGNAL(_fromUtf8("toggled(bool)")), self.camContrastSlider.setHidden)
         QtCore.QObject.connect(self.colorHueCheckBox, QtCore.SIGNAL(_fromUtf8("toggled(bool)")), self.camGainLabel.setHidden)
         QtCore.QObject.connect(self.colorHueCheckBox, QtCore.SIGNAL(_fromUtf8("toggled(bool)")), self.camGainSlider.setHidden)
+        QtCore.QObject.connect(self.colorHueCheckBox, QtCore.SIGNAL(_fromUtf8("toggled(bool)")), self.colorPreview.setVisible)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):

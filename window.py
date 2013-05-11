@@ -1,4 +1,5 @@
 import colorsys
+import re
 
 __author__ = 'Waldo'
 
@@ -10,7 +11,6 @@ from server_communication import ServerCommunication
 import preferences
 Preferences = preferences.Preferences.Instance
 
-# todo: test servercommunication
 # todo: sampler tab loading frame?
 # todo: server tab not connected warning
 # todo: make it an exe or bat?
@@ -103,7 +103,7 @@ class MainWindow(QtGui.QMainWindow):
 
         # Color tab check and uncheck to refresh ui
         self.ui.colorHueCheckBox.toggle()
-        self.ui.colorHueCheckBox.toggle()
+        self.ui.colorHueCheckBox.toggle() #intentional
 
     def _addDropShadowToText(self, label, hexCode):
         dropShadowEffect = QtGui.QGraphicsDropShadowEffect(self)
@@ -169,21 +169,38 @@ class MainWindow(QtGui.QMainWindow):
         log.debug("fadeDuration set to %ims" % self.ui.fadeDurationSlider.value())
         self.updateAndSaveSettings()
 
+        
+
     def on_colorHueCheckBox_toggled(self, checked):
         log.debug("fixedColorEnabled set to %s" % checked)
+        self.updateFixedColorPreview()
         self.updateAndSaveSettings()
 
     def on_colorHueSlider_sliderReleased(self):
         log.debug("colorHue set to %i" % self.ui.colorHueSlider.value())
+        self.updateFixedColorPreview()
         self.updateAndSaveSettings()
 
     def on_colorSaturationSlider_sliderReleased(self):
         log.debug("colorSaturation set to %i" % self.ui.colorSaturationSlider.value())
+        self.updateFixedColorPreview()
         self.updateAndSaveSettings()
 
     def on_colorBrightnessSlider_sliderReleased(self):
         log.debug("colorBrightness set to %i" % self.ui.colorBrightnessSlider.value())
+        self.updateFixedColorPreview()
         self.updateAndSaveSettings()
+        
+    def on_colorHueSlider_valueChanged(self):
+        self.updateFixedColorPreview()
+
+    def on_colorSaturationSlider_valueChanged(self):
+        self.updateFixedColorPreview()
+
+    def on_colorBrightnessSlider_valueChanged(self):
+        self.updateFixedColorPreview()
+
+
 
     def on_camSaturationSlider_sliderReleased(self):
         log.debug("camSaturation set to %i" % self.ui.camSaturationSlider.value())
@@ -221,6 +238,16 @@ class MainWindow(QtGui.QMainWindow):
             self.serverComm.connectTo(Preferences.serverIp, Preferences.serverPort)
             self.ui.connectButton.hide()
 
+    def updateFixedColorPreview(self):
+        hue = self.ui.colorHueSlider.value() / 100.0
+        saturation = self.ui.colorSaturationSlider.value() / 100.0
+        brightness = self.ui.colorBrightnessSlider.value() / 100.0
+        r, g, b = colorsys.hsv_to_rgb(hue, saturation, brightness)
+        color = "#{0:02x}{1:02x}{2:02x}".format(int(r*255), int(g*255), int(b*255))
+        style = self.ui.colorPreview.styleSheet()
+        style = re.sub(r'background-color: #[0-9A-Fa-f]*;', "background-color: {0:s};".format(color), style)
+        self.ui.colorPreview.setStyleSheet(style)
+
     def updateAndSaveSettings(self):
         if not self.initialized:
             return
@@ -249,10 +276,6 @@ class MainWindow(QtGui.QMainWindow):
         Preferences.camBrightness = self.ui.camBrightnessSlider.value()
         Preferences.camContrast = self.ui.camContrastSlider.value()
         Preferences.camGain = self.ui.camGainSlider.value()
-
-        # debug
-        rgb = colorsys.hsv_to_rgb(Preferences.colorHue/100.0, Preferences.colorSaturation/100.0, Preferences.colorBrightness/100.0)
-        self.ui.COLORFRAME.setStyleSheet("#COLORFRAME { background: rgb("+str(int(rgb[0]*255))+", "+str(int(rgb[1]*255))+", "+str(int(rgb[2]*255))+"); }")
 
         # Save and update server
         preferences.savePreferences()

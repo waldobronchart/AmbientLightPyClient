@@ -196,12 +196,17 @@ class Sampler(QtGui.QLabel):
         self.nodesContainer.nodesMoved.connect(self.on_nodesContainer_nodesMoved)
         self.setFrame(None, 0, 0)
 
-    def setFrame(self, buffer, bufferWidth, bufferHeight):
-        if buffer is None:
+    def setFrame(self, pixels, width, height):
+        if pixels is None:
             self.setPixmap(self.bgPixmap)
             return
-
-        image = QtGui.QImage(buffer, bufferWidth, bufferHeight, 0, QtGui.QImage.Format_RGB888)
+        
+        image = QtGui.QImage(width, height, QtGui.QImage.Format_RGB32)
+        for y in range(height):
+            for x in range(width):
+                r, g, b = pixels[x + (y * width)]
+                image.setPixel(x, y, QtGui.qRgba(r, g, b, 255))
+        
         pixmap = QtGui.QPixmap.fromImage(image)
         self.setPixmap(pixmap)
 

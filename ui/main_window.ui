@@ -345,7 +345,7 @@ QTabBar::tab:selected  {
             <item>
              <widget class="QSlider" name="fadeDurationSlider">
               <property name="maximum">
-               <number>1000</number>
+               <number>2000</number>
               </property>
               <property name="singleStep">
                <number>1</number>
@@ -398,6 +398,33 @@ QTabBar::tab:selected  {
                  </size>
                 </property>
                </spacer>
+              </item>
+              <item>
+               <widget class="QLabel" name="colorPreview">
+                <property name="minimumSize">
+                 <size>
+                  <width>40</width>
+                  <height>16</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>40</width>
+                  <height>16</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">#colorPreview {
+	border: 4px;
+	border-image: url(:/ui/resources/color_preview.png) 4 4 4 4;
+	background-color: #ff0000;
+	margin-right: 4px;
+}</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
               </item>
               <item>
                <widget class="QCheckBox" name="colorHueCheckBox">
@@ -671,25 +698,6 @@ QTabBar::tab:selected  {
            </spacer>
           </item>
          </layout>
-        </widget>
-        <widget class="QFrame" name="COLORFRAME">
-         <property name="geometry">
-          <rect>
-           <x>461</x>
-           <y>134</y>
-           <width>39</width>
-           <height>36</height>
-          </rect>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">#COLORFRAME { background: rgb(255, 0, 0); }</string>
-         </property>
-         <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Raised</enum>
-         </property>
         </widget>
        </widget>
        <widget class="QWidget" name="serverTab">
@@ -1517,6 +1525,22 @@ QTabBar::tab:selected  {
     <hint type="destinationlabel">
      <x>338</x>
      <y>485</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>colorHueCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>colorPreview</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>453</x>
+     <y>200</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>415</x>
+     <y>200</y>
     </hint>
    </hints>
   </connection>

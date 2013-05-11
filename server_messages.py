@@ -2,6 +2,7 @@ import json
 import colorsys
 from logger import log
 import preferences
+from PyQt4 import QtGui
 Preferences = preferences.Preferences.Instance
 
 class NetMessageType:
@@ -81,17 +82,17 @@ class MsgFrameBuffer(NetMessage):
         if not self.imageData:
             return
 
-        imageData = ""
+        # Decode colors to (r, g, b) tuple
+        pixels = []
         for pixel in self.imageData:
-            r = (int(pixel) >> 16) & 0b11111111
-            g = (int(pixel) >> 8) & 0b11111111
-            b = int(pixel) & 0b11111111
-
-            imageData += chr(r) + chr(g) + chr(b)
+            r = (pixel >> 16) & 0b11111111
+            g = (pixel >> 8) & 0b11111111
+            b = pixel & 0b11111111
+            pixels.append((r, g, b))
 
         # Update sampler
         from window import MainWindow
-        MainWindow.Instance.sampler.setFrame(imageData, self.width, self.height)
+        MainWindow.Instance.sampler.setFrame(pixels, int(self.width), int(self.height))
 
 class MsgPreferences(NetMessage):
     TYPE = NetMessageType.MSG_PREFERENCES
@@ -108,7 +109,7 @@ class MsgPreferences(NetMessage):
 
         Preferences.fixedColorEnabled = json_data['fixedColorEnabled']
         rgb = json_data['fixedColor']
-        hsv = colorsys.rgb_to_hsv(rgb[0]/255.0, rgb[0]/255.0, rgb[0]/255.0)
+        hsv = colorsys.rgb_to_hsv(rgb[0], rgb[0], rgb[0])
         Preferences.colorHue = int(hsv[0]*100)
         Preferences.colorSaturation = int(hsv[1]*100)
         Preferences.colorBrightness = int(hsv[2]*100)
@@ -150,7 +151,7 @@ class MsgSetColorSettings(NetMessage):
         
         self.fixedColorEnabled = Preferences.fixedColorEnabled
         rgbColor = colorsys.hsv_to_rgb(Preferences.colorHue/100.0, Preferences.colorSaturation/100.0, Preferences.colorBrightness/100.0)
-        self.fixedColor = (int(rgbColor[0]*255), int(rgbColor[1]*255), int(rgbColor[1]*255))
+        self.fixedColor = (rgbColor[0], rgbColor[1], rgbColor[2])
 
         self.camSaturation = Preferences.camSaturation
         self.camBrightness = Preferences.camBrightness

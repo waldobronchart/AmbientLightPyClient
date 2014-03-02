@@ -13,4 +13,8 @@ A video of the project and details on how I built it can be found on my blog:
 Screenshots
 ----------------------------------------
 
+Making this was kind of also an experiment with Qt. I wanted to create a fully custom looking UI, which I designed in Photoshop and implement it using Qt styles. Turns out, Qt is pretty awesome!
+
 ![alt text](http://i.imgur.com/Ml03Ksz.png)
+![alt text](http://i.imgur.com/KoG8awW.png)
+![alt text](http://i.imgur.com/cXWypDy.png)
